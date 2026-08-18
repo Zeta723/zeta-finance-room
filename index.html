@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Zeta 財務整理室｜陪你整理錢與人生</title>
+
+  <style>
+    :root {
+      --bg: #f8f3ec;
+      --card: #fffaf4;
+      --text: #3a3028;
+      --muted: #7b6f63;
+      --gold: #c8a86a;
+      --gold-dark: #a88745;
+      --white: #ffffff;
+      --border: #eadfce;
+      --soft: #efe3d2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1080px, 90%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 22px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(248, 243, 236, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+    }
+
+    .nav-dropdown-toggle .caret {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-top: -3px;
+    }
+
+    .nav-dropdown.open .nav-dropdown-toggle .caret,
+    .nav-dropdown:hover .nav-dropdown-toggle .caret {
+      transform: rotate(-135deg);
+      margin-top: 3px;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(84, 63, 40, 0.14);
+      padding: 8px;
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(6px);
+      transition: 0.18s ease;
+      z-index: 20;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav-dropdown-menu a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+    }
+
+    .hero {
+      padding: 88px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 56px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      color: var(--gold-dark);
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 64px);
+      line-height: 1.18;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.35;
+    }
+
+    h3 {
+      line-height: 1.45;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      max-width: 580px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--card);
+      transform: translateY(-2px);
+    }
+
+    .hero-image {
+      min-height: 460px;
+      background:
+        linear-gradient(rgba(255, 250, 244, 0.06), rgba(255, 250, 244, 0.12)),
+        url("./zeta-photo.jpg");
+      background-size: cover;
+      background-position: center;
+      border-radius: 36px;
+      border: 1px solid var(--border);
+      box-shadow: 0 24px 60px rgba(84, 63, 40, 0.12);
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 12px auto 0;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 28px;
+      border-radius: 28px;
+      border: 1px solid var(--border);
+      box-shadow: 0 12px 36px rgba(84, 63, 40, 0.06);
+    }
+
+    .card h3 {
+      margin-bottom: 12px;
+      font-size: 22px;
+    }
+
+    .card p {
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+    .quiz-box,
+    .form-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 36px;
+      max-width: 880px;
+      margin: 0 auto;
+      box-shadow: 0 18px 50px rgba(84, 63, 40, 0.08);
+    }
+
+    .question-card {
+      padding: 26px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-card:first-child {
+      padding-top: 0;
+    }
+
+    .question-card h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .option {
+      display: block;
+      background: #fffdf9;
+      border: 1px solid var(--border);
+      padding: 13px 16px;
+      border-radius: 16px;
+      margin: 10px 0;
+      font-weight: 400;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .option:hover {
+      border-color: var(--gold);
+      background: #fff8ed;
+    }
+
+    .option input {
+      width: auto;
+      margin-right: 8px;
+      accent-color: var(--gold);
+    }
+
+    .result {
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 24px;
+      background: #f1e4cf;
+      display: none;
+    }
+
+    .result h3 {
+      margin: 10px 0;
+      color: var(--gold-dark);
+      font-size: 24px;
+    }
+
+    .result p {
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .score-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .result-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .about {
+      background: var(--soft);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .about-photo {
+      min-height: 420px;
+      background:
+        linear-gradient(rgba(255, 250, 244, 0.08), rgba(255, 250, 244, 0.16)),
+        url("./zeta-about.jpg");
+      background-size: cover;
+      background-position: center;
+      border-radius: 32px;
+      border: 1px solid var(--border);
+      box-shadow: 0 18px 50px rgba(84, 63, 40, 0.12);
+    }
+
+    .about p {
+      margin-top: 16px;
+      color: var(--muted);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    label.form-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .note {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 16px;
+    }
+
+    footer {
+      padding: 36px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid,
+      .about-grid,
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        row-gap: 12px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 56px 0 40px;
+      }
+
+      .hero-image,
+      .about-photo {
+        min-height: 360px;
+      }
+
+      .quiz-box,
+      .form-box {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Zeta 財務整理室</div>
+        <div class="nav-links">
+          <div class="nav-dropdown" id="quizDropdown">
+            <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+              財務測驗
+              <span class="caret"></span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="retirement.html">退休計算機</a>
+              <a href="#quiz">財務安全感測驗</a>
+            </div>
+          </div>
+          <a href="#services">服務項目</a>
+          <a href="#about">關於 Zeta</a>
+          <a href="#booking">預約諮詢</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">MONEY & LIFE ORGANIZING</div>
+          <h1>整理錢，<br>也是整理人生。</h1>
+          <p>
+            我是 Zeta，一位獨立財務顧問。陪你從現金流、資產配置到未來選擇，
+            一步一步看懂自己的財務狀態，開始過更有底氣的生活。
+          </p>
+          <div class="hero-buttons">
+            <a class="btn btn-primary" href="#quiz">開始財務安全感測驗</a>
+            <a class="btn btn-secondary" href="#booking">留下預約資訊</a>
+          </div>
+        </div>
+
+        <div class="hero-image"></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title">
+          <h2>你是不是也有這種感覺？</h2>
+          <p>不是你不努力存錢，而是你可能還沒有真正整理過自己的金流與人生目標。</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>有存錢，卻不安心</h3>
+            <p>每個月都有存下一點錢，但遇到出國、進修、搬家或大筆支出時，還是很焦慮。</p>
+          </div>
+
+          <div class="card">
+            <h3>想投資，卻不敢開始</h3>
+            <p>知道理財很重要，但不知道該先存緊急預備金、買商品，還是開始投資。</p>
+          </div>
+
+          <div class="card">
+            <h3>有收入，卻沒有變自由</h3>
+            <p>明明有賺錢，生活卻沒有真的變輕鬆，也不知道錢到底卡在哪裡。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="quiz">
+      <div class="container">
+        <div class="section-title">
+          <h2>財務安全感測驗</h2>
+          <p>
+            這不是考試，而是一份幫你看懂目前財務狀態的小測驗。
+            請依照你現在最真實的狀況作答，最後會得到你的財務整理類型。
+          </p>
+        </div>
+
+        <div class="quiz-box">
+          <form id="financeQuiz">
+
+            <div class="question-card">
+              <h3>1. 你現在對自己的財務狀態有多清楚？</h3>
+              <label class="option"><input type="radio" name="q1" value="1"> 完全不清楚，只知道大概有多少錢</label>
+              <label class="option"><input type="radio" name="q1" value="2"> 知道收入，但不太清楚支出</label>
+              <label class="option"><input type="radio" name="q1" value="3"> 大致清楚收入與支出</label>
+              <label class="option"><input type="radio" name="q1" value="4"> 有固定記帳或整理金流</label>
+              <label class="option"><input type="radio" name="q1" value="5"> 非常清楚，並且有定期檢視</label>
+            </div>
+
+            <div class="question-card">
+              <h3>2. 你每個月的存錢狀態比較像哪一種？</h3>
+              <label class="option"><input type="radio" name="q2" value="1"> 幾乎存不到錢</label>
+              <label class="option"><input type="radio" name="q2" value="2"> 有剩才存，不太固定</label>
+              <label class="option"><input type="radio" name="q2" value="3"> 每月可以固定存一點</label>
+              <label class="option"><input type="radio" name="q2" value="4"> 有穩定儲蓄比例</label>
+              <label class="option"><input type="radio" name="q2" value="5"> 有明確存款目標與資金分配</label>
+            </div>
+
+            <div class="question-card">
+              <h3>3. 遇到大筆支出時，你通常會怎麼感覺？</h3>
+              <label class="option"><input type="radio" name="q3" value="1"> 非常焦慮，會覺得存款被掏空</label>
+              <label class="option"><input type="radio" name="q3" value="2"> 有點壓力，但還是會硬著頭皮付</label>
+              <label class="option"><input type="radio" name="q3" value="3"> 可以接受，但會重新調整預算</label>
+              <label class="option"><input type="radio" name="q3" value="4"> 通常已經有預留資金</label>
+              <label class="option"><input type="radio" name="q3" value="5"> 很清楚每筆大支出的資金來源</label>
+            </div>
+
+            <div class="question-card">
+              <h3>4. 你目前對投資理財的狀態是？</h3>
+              <label class="option"><input type="radio" name="q4" value="1"> 完全不知道怎麼開始</label>
+              <label class="option"><input type="radio" name="q4" value="2"> 有興趣，但很怕做錯決定</label>
+              <label class="option"><input type="radio" name="q4" value="3"> 有嘗試投資，但沒有完整規劃</label>
+              <label class="option"><input type="radio" name="q4" value="4"> 有固定投資，也知道自己的風險程度</label>
+              <label class="option"><input type="radio" name="q4" value="5"> 有完整資產配置與長期策略</label>
+            </div>
+
+            <div class="question-card">
+              <h3>5. 你是否有緊急預備金？</h3>
+              <label class="option"><input type="radio" name="q5" value="1"> 沒有，存款很容易被用掉</label>
+              <label class="option"><input type="radio" name="q5" value="2"> 有一點，但不確定夠不夠</label>
+              <label class="option"><input type="radio" name="q5" value="3"> 大概有 1～3 個月生活費</label>
+              <label class="option"><input type="radio" name="q5" value="4"> 有 3～6 個月生活費</label>
+              <label class="option"><input type="radio" name="q5" value="5"> 有完整預備金，且和投資資金分開</label>
+            </div>
+
+            <div class="question-card">
+              <h3>6. 你對自己目前買過的保險或金融商品了解嗎？</h3>
+              <label class="option"><input type="radio" name="q6" value="1"> 幾乎不了解，只知道有繳錢</label>
+              <label class="option"><input type="radio" name="q6" value="2"> 有大概印象，但不確定適不適合</label>
+              <label class="option"><input type="radio" name="q6" value="3"> 知道基本內容，但沒有整體檢視過</label>
+              <label class="option"><input type="radio" name="q6" value="4"> 大多清楚，也知道各自用途</label>
+              <label class="option"><input type="radio" name="q6" value="5"> 非常清楚，並且和人生目標有搭配</label>
+            </div>
+
+            <div class="question-card">
+              <h3>7. 你覺得現在的錢，有沒有讓生活變得更安心？</h3>
+              <label class="option"><input type="radio" name="q7" value="1"> 沒有，反而常常焦慮</label>
+              <label class="option"><input type="radio" name="q7" value="2"> 偶爾安心，但大多時候還是不踏實</label>
+              <label class="option"><input type="radio" name="q7" value="3"> 有一點安全感，但還不穩定</label>
+              <label class="option"><input type="radio" name="q7" value="4"> 大部分時候是安心的</label>
+              <label class="option"><input type="radio" name="q7" value="5"> 很安心，也知道自己下一步要做什麼</label>
+            </div>
+
+            <div class="question-card">
+              <h3>8. 你目前有沒有明確的財務目標？</h3>
+              <label class="option"><input type="radio" name="q8" value="1"> 沒有，只是想多存一點錢</label>
+              <label class="option"><input type="radio" name="q8" value="2"> 有想法，但沒有具體數字</label>
+              <label class="option"><input type="radio" name="q8" value="3"> 有短期目標，例如旅遊、存款、進修</label>
+              <label class="option"><input type="radio" name="q8" value="4"> 有短中長期目標</label>
+              <label class="option"><input type="radio" name="q8" value="5"> 有完整目標，也知道每月該怎麼執行</label>
+            </div>
+
+            <button class="btn btn-primary" type="button" onclick="calculateFinanceType()">
+              查看我的財務整理類型
+            </button>
+
+            <div id="financeResult" class="result"></div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-title">
+          <h2>我可以陪你整理的方向</h2>
+          <p>先看懂自己的錢，再決定下一步要怎麼走。</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>現金流分析</h3>
+            <p>
+              適合有收入、有存款，但總覺得錢沒有真正改善生活的人。
+              我會陪你整理收入、支出、固定開銷與儲蓄比例，找出金流卡住的地方。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>資產配置</h3>
+            <p>
+              適合想開始理財投資，但不知道怎麼分配資金的小白。
+              我會陪你釐清緊急預備金、保值層、投資層與長期規劃。
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>房產活化</h3>
+            <p>
+              適合自己或家庭有房產，但不知道如何讓資產更有效運用的人。
+              我會協助你檢視房貸、現金流與資產運用的可能性。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-title">
+          <h2>Zeta 的財務整理筆記</h2>
+          <p>一些關於錢、生活、安全感與選擇的想法。</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>為什麼月存 15,000，還是很沒有安全感？</h3>
+            <p>有時候問題不是你沒有存錢，而是你不知道這筆錢未來要負責什麼。</p>
+          </div>
+
+          <div class="card">
+            <h3>股票有賺錢，為什麼生活沒有變好？</h3>
+            <p>投資報酬不等於生活自由。真正重要的是配置、現金流與安全感。</p>
+          </div>
+
+          <div class="card">
+            <h3>理財不是省吃儉用</h3>
+            <p>好的理財，是讓你更敢做選擇，而不是把人生越過越小。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about">
+      <div class="container about-grid">
+        <div class="about-photo"></div>
+
+        <div>
+          <div class="eyebrow">ABOUT ZETA</div>
+          <h2>關於 Zeta 財務整理室</h2>
+          <p>
+            我是 Zeta，一位獨立財務顧問。
+            我相信理財不是把生活縮小，也不是一味追求高報酬，
+            而是讓你更清楚知道自己的錢在哪裡、未來想去哪裡，
+            以及現在可以怎麼安排。
+          </p>
+
+          <p>
+            在 Zeta 財務整理室，我會陪你從現金流、資產配置到人生目標，
+            一步一步把財務狀態整理清楚。真正好的財務規劃，
+            不只是讓你變有錢，而是讓你變得更安心、更有選擇，
+            也更敢過自己想要的生活。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="booking">
+      <div class="container">
+        <div class="section-title">
+          <h2>留下你的財務整理預約資訊</h2>
+          <p>
+            填完測驗後，如果你想進一步了解自己的現金流、資產配置或房產活化方向，
+            可以先留下資料，我會依照你的狀態初步判斷適合的諮詢方式。
+          </p>
+        </div>
+
+        <div class="form-box">
+          <form id="bookingForm" action="https://formspree.io/f/mwvjolja" method="POST">
+
+            <input type="hidden" id="quizScoreInput" name="財務測驗分數">
+            <input type="hidden" id="quizTypeInput" name="財務整理類型">
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="name">姓名／暱稱</label>
+                <input type="text" id="name" name="姓名或暱稱" placeholder="例如：小安" required>
+              </div>
+
+              <div>
+                <label class="form-label" for="contact">IG 或 Email</label>
+                <input type="text" id="contact" name="聯絡方式" placeholder="例如：@your_ig 或 email@example.com" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="age">年齡區間</label>
+                <select id="age" name="年齡區間" required>
+                  <option value="">請選擇</option>
+                  <option>20 歲以下</option>
+                  <option>21～25 歲</option>
+                  <option>26～30 歲</option>
+                  <option>31～35 歲</option>
+                  <option>36 歲以上</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label" for="method">諮詢方式</label>
+                <select id="method" name="希望諮詢方式" required>
+                  <option value="">請選擇</option>
+                  <option>線上諮詢</option>
+                  <option>實體諮詢</option>
+                  <option>都可以</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="income">每月收入區間</label>
+                <select id="income" name="每月收入區間" required>
+                  <option value="">請選擇</option>
+                  <option>30,000 以下</option>
+                  <option>30,001～50,000</option>
+                  <option>50,001～80,000</option>
+                  <option>80,001～120,000</option>
+                  <option>120,000 以上</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="form-label" for="saving">目前存款區間</label>
+                <select id="saving" name="目前存款區間" required>
+                  <option value="">請選擇</option>
+                  <option>50,000 以下</option>
+                  <option>50,001～200,000</option>
+                  <option>200,001～500,000</option>
+                  <option>500,001～1,000,000</option>
+                  <option>1,000,000 以上</option>
+                </select>
+              </div>
+            </div>
+
+            <label class="form-label" for="service">最想諮詢的方向</label>
+            <select id="service" name="最想諮詢方向" required>
+              <option value="">請選擇</option>
+              <option>現金流分析</option>
+              <option>資產配置</option>
+              <option>房產活化</option>
+              <option>我還不確定，想先聊聊</option>
+            </select>
+
+            <label class="form-label" for="message">目前最困擾你的財務問題是什麼？</label>
+            <textarea id="message" name="財務困擾" placeholder="例如：我有存款但不知道怎麼分配、想開始投資但很怕做錯決定..." required></textarea>
+
+            <button class="btn btn-primary" type="submit" style="margin-top: 24px;">
+              送出預約資訊
+            </button>
+
+            <p class="note">
+              送出後，Zeta 會依照你的狀況初步判斷適合的諮詢方向。此表單不會公開你的個人資訊。
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 Zeta 財務整理室｜陪你整理錢與人生
+  </footer>
+
+  <script>
+    const quizDropdown = document.getElementById("quizDropdown");
+    const quizDropdownToggle = quizDropdown.querySelector(".nav-dropdown-toggle");
+
+    quizDropdownToggle.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const isOpen = quizDropdown.classList.toggle("open");
+      quizDropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!quizDropdown.contains(event.target)) {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    quizDropdown.querySelectorAll(".nav-dropdown-menu a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    let latestScore = "";
+    let latestType = "";
+
+    function calculateFinanceType() {
+      const totalQuestions = 8;
+      let score = 0;
+
+      for (let i = 1; i <= totalQuestions; i++) {
+        const answer = document.querySelector(`input[name="q${i}"]:checked`);
+
+        if (!answer) {
+          alert(`請完成第 ${i} 題後，再查看結果唷。`);
+          return;
+        }
+
+        score += Number(answer.value);
+      }
+
+      const resultBox = document.getElementById("financeResult");
+      resultBox.style.display = "block";
+
+      let typeName = "";
+      let description = "";
+      let suggestion = "";
+
+      if (score <= 14) {
+        typeName = "財務迷霧型";
+        description = "你現在可能不是不努力，而是還沒有真正看清楚自己的錢流向哪裡。收入、支出、存款、投資可能都混在一起，所以很容易感覺焦慮、不踏實。";
+        suggestion = "你最適合先做「現金流分析」，把每個月的收入、固定支出、生活費、儲蓄和可投資資金整理清楚。先不用急著投資，先把底盤穩住會更重要。";
+      } else if (score <= 22) {
+        typeName = "存錢焦慮型";
+        description = "你可能已經有在存錢，也不是完全沒有財務意識，但你對金錢的安全感還不穩定。你會想讓錢變多，但又怕做錯決定，常常卡在想開始卻不敢開始。";
+        suggestion = "你很適合先建立「財務分層」概念，例如緊急預備金、保值層、投資層和生活目標金。當每筆錢都有任務，你會更知道什麼錢可以花、什麼錢該守住。";
+      } else if (score <= 30) {
+        typeName = "準備配置型";
+        description = "你已經有一定的財務基礎，可能也有存款或投資經驗。你現在需要的不是更多零碎資訊，而是把現有資金重新整理成更清楚的資產配置。";
+        suggestion = "你適合進一步做「資產配置」規劃，釐清短期資金、中期目標、長期投資與風險承受度，讓你的錢不只是放著，而是更有效率地往目標前進。";
+      } else {
+        typeName = "資產優化型";
+        description = "你對自己的財務狀態已經有不錯的掌握，也有一定規劃能力。接下來的重點會是優化，而不是從零開始。";
+        suggestion = "你可以開始檢視資產效率、房產活化、長期現金流和更完整的家庭／人生財務規劃，讓資產不只是累積，而是支撐你想要的生活選擇。";
+      }
+
+      latestScore = `${score} / 40`;
+      latestType = typeName;
+
+      document.getElementById("quizScoreInput").value = latestScore;
+      document.getElementById("quizTypeInput").value = latestType;
+
+      resultBox.innerHTML = `
+        <div class="score-badge">你的分數：${score} / 40</div>
+        <h3>你的財務整理類型：${typeName}</h3>
+        <p>${description}</p>
+        <p><strong>Zeta 給你的整理建議：</strong>${suggestion}</p>
+
+        <div class="result-actions">
+          <a class="btn btn-primary" href="#booking">留下預約資訊</a>
+          <a class="btn btn-secondary" href="#services">看看適合的服務</a>
+        </div>
+      `;
+
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    document.getElementById("bookingForm").addEventListener("submit", function(event) {
+      if (!latestScore || !latestType) {
+        const confirmSubmit = confirm("你還沒有完成財務安全感測驗。仍然要送出預約資訊嗎？");
+
+        if (!confirmSubmit) {
+          event.preventDefault();
+          document.getElementById("quiz").scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

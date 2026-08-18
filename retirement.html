@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>退休計算機｜Zeta 財務整理室</title>
+
+  <style>
+    :root {
+      --bg: #f8f3ec;
+      --card: #fffaf4;
+      --text: #3a3028;
+      --muted: #7b6f63;
+      --gold: #c8a86a;
+      --gold-dark: #a88745;
+      --white: #ffffff;
+      --border: #eadfce;
+      --soft: #efe3d2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1080px, 90%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 22px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(248, 243, 236, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+    }
+
+    .nav-dropdown-toggle .caret {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-top: -3px;
+    }
+
+    .nav-dropdown.open .nav-dropdown-toggle .caret,
+    .nav-dropdown:hover .nav-dropdown-toggle .caret {
+      transform: rotate(-135deg);
+      margin-top: 3px;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(84, 63, 40, 0.14);
+      padding: 8px;
+      min-width: 180px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(6px);
+      transition: 0.18s ease;
+      z-index: 20;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav-dropdown-menu a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.35;
+    }
+
+    h3 {
+      line-height: 1.45;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--card);
+      transform: translateY(-2px);
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 12px auto 0;
+    }
+
+    .quiz-box,
+    .form-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 36px;
+      max-width: 880px;
+      margin: 0 auto;
+      box-shadow: 0 18px 50px rgba(84, 63, 40, 0.08);
+    }
+
+    .result {
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 24px;
+      background: #f1e4cf;
+      display: none;
+    }
+
+    .result h3 {
+      margin: 10px 0;
+      color: var(--gold-dark);
+      font-size: 24px;
+    }
+
+    .result p {
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .score-badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .result-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    label.form-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    footer {
+      padding: 36px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 860px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        row-gap: 12px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 13px;
+      }
+
+      .quiz-box,
+      .form-box {
+        padding: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a class="logo" href="index.html">Zeta 財務整理室</a>
+        <div class="nav-links">
+          <div class="nav-dropdown" id="quizDropdown">
+            <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+              財務測驗
+              <span class="caret"></span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="retirement.html">退休計算機</a>
+              <a href="index.html#quiz">財務安全感測驗</a>
+            </div>
+          </div>
+          <a href="index.html#services">服務項目</a>
+          <a href="index.html#about">關於 Zeta</a>
+          <a href="index.html#booking">預約諮詢</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="retirement">
+      <div class="container">
+        <div class="section-title">
+          <h2>退休計算機</h2>
+          <p>
+            用幾個簡單的數字，快速抓一下你退休時大概能累積多少資產，
+            以及退休後每個月大概可以動用多少錢。
+          </p>
+        </div>
+
+        <div class="quiz-box">
+          <form id="retirementCalc">
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="rcAge">目前年齡</label>
+                <input type="number" id="rcAge" min="18" max="100" placeholder="例如：30" required>
+              </div>
+
+              <div>
+                <label class="form-label" for="rcRetireAge">預計退休年齡</label>
+                <input type="number" id="rcRetireAge" min="18" max="100" placeholder="例如：60" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="rcSavings">目前累積的退休金／存款（元）</label>
+                <input type="number" id="rcSavings" min="0" placeholder="例如：300000" required>
+              </div>
+
+              <div>
+                <label class="form-label" for="rcMonthly">每月可以投入的金額（元）</label>
+                <input type="number" id="rcMonthly" min="0" placeholder="例如：10000" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div>
+                <label class="form-label" for="rcReturn">預期年化報酬率（%）</label>
+                <input type="number" id="rcReturn" min="0" max="30" step="0.1" placeholder="例如：5" required>
+              </div>
+
+              <div>
+                <label class="form-label" for="rcMonthlyGoal">退休後希望每月有多少生活費（元）</label>
+                <input type="number" id="rcMonthlyGoal" min="0" placeholder="例如：40000" required>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" type="button" onclick="calculateRetirement()">
+              計算我的退休預估
+            </button>
+
+            <div id="retirementResult" class="result"></div>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 Zeta 財務整理室｜陪你整理錢與人生
+  </footer>
+
+  <script>
+    const quizDropdown = document.getElementById("quizDropdown");
+    const quizDropdownToggle = quizDropdown.querySelector(".nav-dropdown-toggle");
+
+    quizDropdownToggle.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const isOpen = quizDropdown.classList.toggle("open");
+      quizDropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!quizDropdown.contains(event.target)) {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    quizDropdown.querySelectorAll(".nav-dropdown-menu a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    function calculateRetirement() {
+      const currentAge = Number(document.getElementById("rcAge").value);
+      const retireAge = Number(document.getElementById("rcRetireAge").value);
+      const savings = Number(document.getElementById("rcSavings").value);
+      const monthly = Number(document.getElementById("rcMonthly").value);
+      const annualReturn = Number(document.getElementById("rcReturn").value);
+      const monthlyGoal = Number(document.getElementById("rcMonthlyGoal").value);
+
+      if (!currentAge || !retireAge || retireAge <= currentAge || annualReturn < 0 || !monthlyGoal) {
+        alert("請確認欄位都已正確填寫，且預計退休年齡要大於目前年齡唷。");
+        return;
+      }
+
+      const months = (retireAge - currentAge) * 12;
+      const monthlyRate = annualReturn / 100 / 12;
+
+      let futureValue;
+      if (monthlyRate === 0) {
+        futureValue = savings + monthly * months;
+      } else {
+        futureValue =
+          savings * Math.pow(1 + monthlyRate, months) +
+          monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate) * (1 + monthlyRate);
+      }
+
+      // 用「每年提領 6.5%」的概念，概估退休後每月大約可以動用多少錢
+      const monthlyWithdrawal = (futureValue * 0.065) / 12;
+      const isEnough = monthlyWithdrawal >= monthlyGoal;
+
+      const formattedFV = Math.round(futureValue).toLocaleString("zh-TW");
+      const formattedWithdrawal = Math.round(monthlyWithdrawal).toLocaleString("zh-TW");
+      const formattedGoal = Math.round(monthlyGoal).toLocaleString("zh-TW");
+
+      const resultBox = document.getElementById("retirementResult");
+      resultBox.style.display = "block";
+
+      resultBox.innerHTML = `
+        <div class="score-badge">預估退休時資產：約 ${formattedFV} 元</div>
+        <h3>${isEnough ? "目前的規劃，大致有機會達成目標" : "目前的規劃，可能還沒完全達到目標"}</h3>
+        <p>
+          依照「每年提領 6.5%」的概估方式，你退休後大約每個月可以動用
+          <strong>${formattedWithdrawal} 元</strong>，
+          而你希望的退休生活費是每個月 <strong>${formattedGoal} 元</strong>。
+        </p>
+        <p>
+          ${isEnough
+            ? "這只是一個粗略的估算，實際情況還會受到通膨、投資波動與退休後花費變化影響，建議進一步做完整的資產配置規劃。"
+            : "如果想拉近落差，可以考慮拉長投資時間、提高每月投入金額，或重新檢視資產配置與投資報酬率，這些都可以再一起討論。"}
+        </p>
+
+        <div class="result-actions">
+          <a class="btn btn-primary" href="index.html#booking">留下預約資訊</a>
+          <a class="btn btn-secondary" href="index.html#services">看看適合的服務</a>
+        </div>
+      `;
+
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  </script>
+
+</body>
+</html>
