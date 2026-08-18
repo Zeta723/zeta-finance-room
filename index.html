@@ -118,7 +118,7 @@
       border-radius: 18px;
       box-shadow: 0 18px 40px rgba(84, 63, 40, 0.14);
       padding: 8px;
-      min-width: 180px;
+      min-width: 220px;
       opacity: 0;
       visibility: hidden;
       transform: translateX(-50%) translateY(6px);
@@ -363,6 +363,44 @@
       gap: 12px;
     }
 
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .result ul {
+      margin: 8px 0 0 20px;
+    }
+
+    .result li {
+      margin-bottom: 6px;
+    }
+
+    .prefill-note {
+      text-align: center;
+      color: var(--gold-dark);
+      font-weight: 700;
+      margin: -16px auto 28px;
+      max-width: 720px;
+    }
+
+    .card .btn {
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
     .about {
       background: var(--soft);
     }
@@ -492,6 +530,7 @@
             <div class="nav-dropdown-menu">
               <a href="retirement.html">退休計算機</a>
               <a href="#quiz">財務安全感測驗</a>
+              <a href="property-quiz.html">房產資金運用健康度測驗</a>
             </div>
           </div>
           <a href="#services">服務項目</a>
@@ -520,6 +559,44 @@
         </div>
 
         <div class="hero-image"></div>
+      </div>
+    </section>
+
+    <section id="quiz-picker">
+      <div class="container">
+        <div class="section-title">
+          <h2>先從一個小測驗開始</h2>
+          <p>不確定從哪裡開始整理也沒關係，挑一個最貼近你現況的測驗，先看懂自己目前的狀態。</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <h3>退休計算機</h3>
+            <p>
+              用幾個簡單的數字，快速抓一下你退休時大概能累積多少資產，
+              以及退休後每個月大概可以動用多少錢。
+            </p>
+            <a class="btn btn-primary" href="retirement.html">開始試算退休金</a>
+          </div>
+
+          <div class="card">
+            <h3>財務安全感測驗</h3>
+            <p>
+              這不是考試，而是一份幫你看懂目前財務狀態的小測驗。
+              幾個問題，找出你的財務整理類型。
+            </p>
+            <a class="btn btn-primary" href="#quiz">開始財務安全感測驗</a>
+          </div>
+
+          <div class="card">
+            <h3>房產資金運用健康度測驗</h3>
+            <p>
+              房子可能是你最大的一筆資產，但有資產，不一定代表資金有彈性。
+              適合自己或家庭名下有房產的人，看看目前比較接近哪一種狀態。
+            </p>
+            <a class="btn btn-primary" href="property-quiz.html">開始房產測驗</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -740,11 +817,16 @@
           </p>
         </div>
 
+        <p class="prefill-note" id="bookingPrefillNote" hidden></p>
+
         <div class="form-box">
           <form id="bookingForm" action="https://formspree.io/f/mwvjolja" method="POST">
 
             <input type="hidden" id="quizScoreInput" name="財務測驗分數">
             <input type="hidden" id="quizTypeInput" name="財務整理類型">
+            <input type="hidden" id="leadSourceInput" name="lead_source" value="">
+            <input type="hidden" id="quizTypeSourceInput" name="quiz_type" value="">
+            <input type="hidden" id="quizResultInput" name="quiz_result" value="">
 
             <div class="form-row">
               <div>
@@ -937,6 +1019,38 @@
         }
       }
     });
+
+
+    // 從房產測驗頁面（property-quiz.html）帶著測驗結果跳轉過來時，
+    // 自動把「最想諮詢的方向」預選為「房產活化」，並顯示提示文字。
+    (function prefillBookingFromPropertyQuiz() {
+      const params = new URLSearchParams(window.location.search);
+      const quizResult = params.get("quiz_result");
+
+      if (!quizResult) return;
+
+      const leadSource = params.get("lead_source") || "property_quiz";
+      const quizType = params.get("quiz_type") || "property_health";
+
+      const serviceSelect = document.getElementById("service");
+      if (serviceSelect) {
+        serviceSelect.value = "房產活化";
+      }
+
+      const noteEl = document.getElementById("bookingPrefillNote");
+      if (noteEl) {
+        noteEl.textContent = `已帶入你的測驗結果：${quizResult}`;
+        noteEl.hidden = false;
+      }
+
+      const leadSourceInput = document.getElementById("leadSourceInput");
+      const quizTypeSourceInput = document.getElementById("quizTypeSourceInput");
+      const quizResultInput = document.getElementById("quizResultInput");
+
+      if (leadSourceInput) leadSourceInput.value = leadSource;
+      if (quizTypeSourceInput) quizTypeSourceInput.value = quizType;
+      if (quizResultInput) quizResultInput.value = quizResult;
+    })();
   </script>
 
 </body>

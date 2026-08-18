@@ -118,7 +118,7 @@
       border-radius: 18px;
       box-shadow: 0 18px 40px rgba(84, 63, 40, 0.14);
       padding: 8px;
-      min-width: 180px;
+      min-width: 220px;
       opacity: 0;
       visibility: hidden;
       transform: translateX(-50%) translateY(6px);
@@ -308,6 +308,17 @@
         padding: 24px;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 
@@ -326,6 +337,7 @@
             <div class="nav-dropdown-menu">
               <a href="retirement.html">退休計算機</a>
               <a href="index.html#quiz">財務安全感測驗</a>
+              <a href="property-quiz.html">房產資金運用健康度測驗</a>
             </div>
           </div>
           <a href="index.html#services">服務項目</a>

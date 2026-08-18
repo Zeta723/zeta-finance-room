@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>房產資金運用健康度測驗｜Zeta 財務整理室</title>
+
+  <style>
+    :root {
+      --bg: #f8f3ec;
+      --card: #fffaf4;
+      --text: #3a3028;
+      --muted: #7b6f63;
+      --gold: #c8a86a;
+      --gold-dark: #a88745;
+      --white: #ffffff;
+      --border: #eadfce;
+      --soft: #efe3d2;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.8;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(1080px, 90%);
+      margin: 0 auto;
+    }
+
+    header {
+      padding: 22px 0;
+      position: sticky;
+      top: 0;
+      background: rgba(248, 243, 236, 0.92);
+      backdrop-filter: blur(10px);
+      z-index: 10;
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 22px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .nav-dropdown {
+      position: relative;
+    }
+
+    .nav-dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font: inherit;
+      color: inherit;
+      padding: 0;
+    }
+
+    .nav-dropdown-toggle .caret {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: rotate(45deg);
+      transition: transform 0.2s ease;
+      margin-top: -3px;
+    }
+
+    .nav-dropdown.open .nav-dropdown-toggle .caret,
+    .nav-dropdown:hover .nav-dropdown-toggle .caret {
+      transform: rotate(-135deg);
+      margin-top: 3px;
+    }
+
+    .nav-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 14px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: 0 18px 40px rgba(84, 63, 40, 0.14);
+      padding: 8px;
+      min-width: 220px;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateX(-50%) translateY(6px);
+      transition: 0.18s ease;
+      z-index: 20;
+    }
+
+    .nav-dropdown:hover .nav-dropdown-menu,
+    .nav-dropdown.open .nav-dropdown-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .nav-dropdown-menu a {
+      display: block;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 14px;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .nav-dropdown-menu a:hover {
+      background: var(--soft);
+      color: var(--gold-dark);
+    }
+
+    h2 {
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.35;
+    }
+
+    h3 {
+      line-height: 1.45;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      cursor: pointer;
+      border: none;
+      font-size: 15px;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--gold);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--gold-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold-dark);
+    }
+
+    .btn-secondary:hover {
+      background: var(--card);
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 12px auto 0;
+    }
+
+    .quiz-box,
+    .form-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 32px;
+      padding: 36px;
+      max-width: 880px;
+      margin: 0 auto;
+      box-shadow: 0 18px 50px rgba(84, 63, 40, 0.08);
+    }
+
+    .question-card {
+      padding: 26px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .question-card:first-child {
+      padding-top: 0;
+    }
+
+    .question-card h3 {
+      font-size: 20px;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .option {
+      display: block;
+      background: #fffdf9;
+      border: 1px solid var(--border);
+      padding: 13px 16px;
+      border-radius: 16px;
+      margin: 10px 0;
+      font-weight: 400;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .option:hover {
+      border-color: var(--gold);
+      background: #fff8ed;
+    }
+
+    .option input {
+      width: auto;
+      margin-right: 8px;
+      accent-color: var(--gold);
+    }
+
+    .result {
+      margin-top: 28px;
+      padding: 28px;
+      border-radius: 24px;
+      background: #f1e4cf;
+      display: none;
+    }
+
+    .result h3 {
+      margin: 10px 0;
+      color: var(--gold-dark);
+      font-size: 24px;
+    }
+
+    .result p {
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .result ul {
+      margin: 8px 0 0 20px;
+    }
+
+    .result li {
+      margin-bottom: 6px;
+    }
+
+    .result-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .result-cta {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    .result-cta h4 {
+      color: var(--gold-dark);
+      margin-bottom: 8px;
+      font-size: 18px;
+    }
+
+    /* ===== 進度條與逐題導覽樣式 ===== */
+    .quiz-progress-wrap {
+      margin-bottom: 24px;
+    }
+
+    .quiz-progress-label {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    .quiz-progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--soft);
+      overflow: hidden;
+    }
+
+    .quiz-progress-fill {
+      height: 100%;
+      background: var(--gold);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .quiz-nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .quiz-hint {
+      min-height: 20px;
+      color: #b5482f;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    footer {
+      padding: 36px 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    @media (max-width: 860px) {
+      nav {
+        flex-wrap: wrap;
+        row-gap: 12px;
+      }
+
+      .nav-links {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 14px;
+        font-size: 13px;
+      }
+
+      .quiz-box,
+      .form-box {
+        padding: 24px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container">
+      <nav>
+        <a class="logo" href="index.html">Zeta 財務整理室</a>
+        <div class="nav-links">
+          <div class="nav-dropdown" id="quizDropdown">
+            <button type="button" class="nav-dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+              財務測驗
+              <span class="caret"></span>
+            </button>
+            <div class="nav-dropdown-menu">
+              <a href="retirement.html">退休計算機</a>
+              <a href="index.html#quiz">財務安全感測驗</a>
+              <a href="property-quiz.html">房產資金運用健康度測驗</a>
+            </div>
+          </div>
+          <a href="index.html#services">服務項目</a>
+          <a href="index.html#about">關於 Zeta</a>
+          <a href="index.html#booking">預約諮詢</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <section id="property-quiz">
+      <div class="container">
+        <div class="section-title">
+          <h2>房產資金運用健康度測驗</h2>
+          <p>
+            你的房子，帶來的是安全感，還是現金流壓力？<br>
+            房子可能是你最大的一筆資產，但有資產，不一定代表資金有彈性。
+            透過幾個簡單問題，看看你的房產、房貸與未來資金需求，目前比較接近哪一種狀態。
+            適合自己或家庭名下有房產的人。
+          </p>
+        </div>
+
+        <div class="quiz-box">
+
+          <div class="quiz-progress-wrap" id="propertyProgressWrap">
+            <div class="quiz-progress-label" id="propertyProgressLabel">第 1 題，共 8 題</div>
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="propertyProgressFill" style="width: 12.5%;"></div>
+            </div>
+          </div>
+
+          <form id="propertyQuizForm" novalidate>
+            <div id="propertyQuestionArea"></div>
+
+            <p class="quiz-hint" id="propertyHint" role="alert" aria-live="polite"></p>
+
+            <div class="quiz-nav-buttons">
+              <button type="button" class="btn btn-secondary" id="propertyPrevBtn">上一題</button>
+              <button type="button" class="btn btn-primary" id="propertyNextBtn">下一題</button>
+            </div>
+          </form>
+
+          <div id="propertyResult" class="result"></div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 Zeta 財務整理室｜陪你整理錢與人生
+  </footer>
+
+  <script>
+    const quizDropdown = document.getElementById("quizDropdown");
+    const quizDropdownToggle = quizDropdown.querySelector(".nav-dropdown-toggle");
+
+    quizDropdownToggle.addEventListener("click", function (event) {
+      event.stopPropagation();
+      const isOpen = quizDropdown.classList.toggle("open");
+      quizDropdownToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+    });
+
+    document.addEventListener("click", function (event) {
+      if (!quizDropdown.contains(event.target)) {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      }
+    });
+
+    quizDropdown.querySelectorAll(".nav-dropdown-menu a").forEach(function (link) {
+      link.addEventListener("click", function () {
+        quizDropdown.classList.remove("open");
+        quizDropdownToggle.setAttribute("aria-expanded", "false");
+      });
+    });
+
+    /* =========================================================================
+       房產資金運用健康度測驗
+       ---------------------------------------------------------------------
+       這一整段負責「房產資金運用健康度測驗」的題目資料、計分邏輯與畫面渲染。
+       如果之後要調整題目、選項文字或分數，只需要修改下面的
+       propertyQuizQuestions 這個陣列，不需要動到渲染或計分的程式邏輯。
+       ========================================================================= */
+
+    // -------------------------------------------------------------------
+    // 通用事件追蹤函式
+    // 目前網站還沒有串接 GA / GTM 等分析工具，這個函式先寫成「不會出錯」的版本。
+    // 未來如果要串接分析工具，只要把裡面的邏輯換成實際的追蹤程式碼即可，
+    // 呼叫這個函式的地方完全不需要修改。
+    // -------------------------------------------------------------------
+    function trackEvent(eventName, params) {
+      try {
+        if (typeof window.gtag === "function") {
+          window.gtag("event", eventName, params || {});
+        } else if (window.dataLayer && typeof window.dataLayer.push === "function") {
+          window.dataLayer.push(Object.assign({ event: eventName }, params || {}));
+        } else {
+          // 尚未串接任何分析工具時，先在 console 留下紀錄，方便之後除錯與串接
+          console.log("[trackEvent]", eventName, params || {});
+        }
+      } catch (err) {
+        // 追蹤功能發生問題時，不應該影響網站的正常使用
+      }
+    }
+
+    // -------------------------------------------------------------------
+    // 題目資料
+    // 每一題有：
+    //   id      -> 這一題的識別碼（用來對應 radio 的 name）
+    //   text    -> 題目文字
+    //   options -> 這一題的所有選項，每個選項有：
+    //       label  -> 顯示在畫面上的文字
+    //       scores -> 這個選項在三個面向各自加了多少分
+    //                 cashFlowPressure   現金流壓力（房貸與支出造成的壓力）
+    //                 assetConcentration 資產集中程度（錢是不是都卡在房子裡）
+    //                 idleProperty       房產閒置或用途不明確程度
+    // 分數沒有標準答案，是依照「這個選項聽起來越接近哪一種狀態」來給分，
+    // 分數越高代表越接近該面向所描述的狀態。如果之後想調整測驗的敏感度，
+    // 只需要調整這裡的數字。
+    // -------------------------------------------------------------------
+    const propertyQuizQuestions = [
+      {
+        id: "p1",
+        text: "這間房產目前的主要使用方式是？",
+        options: [
+          { label: "自己或家人居住", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "穩定出租中", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "有出租，但收入不穩定", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 1 } },
+          { label: "長期閒置或很少使用", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 3 } },
+          { label: "和家人共同持有，還沒有明確安排", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 2 } }
+        ]
+      },
+      {
+        id: "p2",
+        text: "每月房貸支出大約占家庭收入多少？",
+        options: [
+          { label: "沒有房貸", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "20% 以下", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "20%～35%", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
+          { label: "35%～50%", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
+          { label: "50% 以上", scores: { cashFlowPressure: 3, assetConcentration: 0, idleProperty: 0 } },
+          { label: "我不太清楚", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 1 } }
+        ]
+      },
+      {
+        id: "p3",
+        text: "支付房貸與房屋相關支出後，你每個月還能穩定存錢嗎？",
+        options: [
+          { label: "可以，而且仍有充足餘裕", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "可以固定存一部分", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "有剩下才存，不太固定", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
+          { label: "幾乎存不到錢", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
+          { label: "有時還需要動用存款", scores: { cashFlowPressure: 3, assetConcentration: 0, idleProperty: 0 } }
+        ]
+      },
+      {
+        id: "p4",
+        text: "你清楚這間房產目前的市值、貸款餘額與持有成本嗎？",
+        options: [
+          { label: "很清楚，而且會定期整理", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "大致清楚", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 1 } },
+          { label: "只知道其中一部分", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 2 } },
+          { label: "幾乎不清楚", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 3 } }
+        ]
+      },
+      {
+        id: "p5",
+        text: "房產大約占你或家庭總資產多少比例？",
+        options: [
+          { label: "50% 以下", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "50%～80%", scores: { cashFlowPressure: 0, assetConcentration: 2, idleProperty: 0 } },
+          { label: "80% 以上", scores: { cashFlowPressure: 0, assetConcentration: 3, idleProperty: 0 } },
+          { label: "我不太清楚", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 1 } }
+        ]
+      },
+      {
+        id: "p6",
+        text: "這間房產目前帶來的收入，能負擔相關持有成本嗎？",
+        options: [
+          { label: "可以，而且還有穩定結餘", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "大致可以打平", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "只能負擔一部分", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 1 } },
+          { label: "沒有產生收入", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 2 } },
+          { label: "目前是自住，不以收入為目的", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } }
+        ]
+      },
+      {
+        id: "p7",
+        text: "未來三至五年，你是否有較大的資金需求？",
+        options: [
+          { label: "暫時沒有", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "退休生活", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
+          { label: "換屋或購屋", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
+          { label: "創業或事業發展", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
+          { label: "子女教育或家庭支出", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
+          { label: "投資與資產配置", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 0 } },
+          { label: "還不確定，但希望增加資金彈性", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 1 } }
+        ]
+      },
+      {
+        id: "p8",
+        text: "如果突然需要一筆較大的資金，你目前最可能怎麼處理？",
+        options: [
+          { label: "已經有準備好的資金", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "使用現有存款", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
+          { label: "賣出其他投資", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 0 } },
+          { label: "申請貸款或增加負債", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
+          { label: "可能需要出售房產", scores: { cashFlowPressure: 0, assetConcentration: 3, idleProperty: 0 } },
+          { label: "目前不知道怎麼安排", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 2 } }
+        ]
+      }
+    ];
+
+    // -------------------------------------------------------------------
+    // 結果文案
+    // key 對應 determinePropertyType() 判斷出來的類型：
+    //   pressure      房貸壓力型
+    //   idle          閒置待整理型
+    //   concentration 資產集中型
+    //   calm          安心自住型
+    // -------------------------------------------------------------------
+    const propertyResultContent = {
+      calm: {
+        typeName: "安心自住型",
+        title: "你的房產目前比較接近「安心自住型」",
+        description: "目前房產與生活現金流大致維持在平衡狀態。房子帶給你的主要價值是居住與安全感，暫時沒有明顯的資金壓力。",
+        reminder: "穩定不代表不需要整理。未來仍可以確認退休後的房貸、修繕費用、持有成本，以及房產是否符合下一階段的人生安排。",
+        suggestions: [
+          "確認未來三至五年的居住計畫",
+          "定期整理房貸餘額與房屋持有成本",
+          "預留修繕與家庭緊急資金"
+        ]
+      },
+      pressure: {
+        typeName: "房貸壓力型",
+        title: "你的房產目前比較接近「房貸壓力型」",
+        description: "你不是沒有資產，而是房貸與房屋相關支出可能占用了較多現金流。表面上房貸還繳得動，但存款、投資與生活選擇的空間可能正在被壓縮。",
+        reminder: "現在最重要的不是急著做任何決定，而是先看清楚房貸、收入、家庭支出與未來資金需求之間的關係。",
+        suggestions: [
+          "計算完整房屋持有成本",
+          "確認房貸占家庭收入的實際比例",
+          "盤點未來是否有退休、教育或換屋需求"
+        ]
+      },
+      concentration: {
+        typeName: "資產集中型",
+        title: "你的房產目前比較接近「資產集中型」",
+        description: "你可能擁有一定的資產，但大部分價值集中在房產裡。帳面上看起來有資產，真正需要使用資金時，彈性可能沒有想像中充足。",
+        reminder: "房產本身不一定有問題，重點是它和現金、投資、退休及家庭目標之間，是否有清楚的分工。",
+        suggestions: [
+          "重新計算房產占總資產的比例",
+          "確認手上可動用資金是否充足",
+          "整理未來三至五年的大型資金需求"
+        ]
+      },
+      idle: {
+        typeName: "閒置待整理型",
+        title: "你的房產目前比較接近「閒置待整理型」",
+        description: "這間房產目前可能沒有充分發揮居住、收入或資金運用的功能，也可能因為共同持有、家庭安排或缺乏規劃，而暫時維持原狀。",
+        reminder: "保留房產並不是錯，但即使沒有房貸，仍可能有稅費、管理、修繕與機會成本。先看懂持有目的，再決定下一步會更安心。",
+        suggestions: [
+          "確認繼續持有的主要原因",
+          "整理每年的實際持有成本",
+          "與家人釐清未來用途與決策方式"
+        ]
+      }
+    };
+
+    // 三個面向的分數都低於這個門檻時，視為「安心自住型」。
+    // 數字越小，代表越容易被判斷成安心自住型；可依實際狀況調整。
+    const PROPERTY_LOW_THRESHOLD = 2;
+
+    let propertyCurrentIndex = 0;
+    let propertyAnswers = {};
+
+    function renderPropertyQuestion() {
+      const q = propertyQuizQuestions[propertyCurrentIndex];
+      const total = propertyQuizQuestions.length;
+
+      document.getElementById("propertyProgressLabel").textContent =
+        `第 ${propertyCurrentIndex + 1} 題，共 ${total} 題`;
+      document.getElementById("propertyProgressFill").style.width =
+        `${((propertyCurrentIndex + 1) / total) * 100}%`;
+
+      const savedAnswer = propertyAnswers[q.id];
+
+      const optionsHtml = q.options.map(function (opt, i) {
+        const checked = savedAnswer === i ? "checked" : "";
+        return `
+          <label class="option">
+            <input type="radio" name="${q.id}" value="${i}" ${checked}>
+            ${opt.label}
+          </label>
+        `;
+      }).join("");
+
+      document.getElementById("propertyQuestionArea").innerHTML = `
+        <div class="question-card">
+          <h3>${propertyCurrentIndex + 1}. ${q.text}</h3>
+          ${optionsHtml}
+        </div>
+      `;
+
+      document.querySelectorAll(`input[name="${q.id}"]`).forEach(function (input) {
+        input.addEventListener("change", function () {
+          propertyAnswers[q.id] = Number(input.value);
+          hidePropertyHint();
+          trackEvent("property_quiz_answer", { question: q.id });
+        });
+      });
+
+      hidePropertyHint();
+
+      document.getElementById("propertyPrevBtn").disabled = propertyCurrentIndex === 0;
+
+      document.getElementById("propertyNextBtn").textContent =
+        propertyCurrentIndex === total - 1 ? "查看我的房產資金狀態" : "下一題";
+    }
+
+    function showPropertyHint(message) {
+      document.getElementById("propertyHint").textContent = message;
+    }
+
+    function hidePropertyHint() {
+      document.getElementById("propertyHint").textContent = "";
+    }
+
+    function goToNextPropertyQuestion() {
+      const q = propertyQuizQuestions[propertyCurrentIndex];
+      const answer = document.querySelector(`input[name="${q.id}"]:checked`);
+
+      if (!answer) {
+        showPropertyHint("請選擇一個答案後，再繼續下一題唷。");
+        return;
+      }
+
+      propertyAnswers[q.id] = Number(answer.value);
+
+      if (propertyCurrentIndex === propertyQuizQuestions.length - 1) {
+        finishPropertyQuiz();
+        return;
+      }
+
+      propertyCurrentIndex++;
+      renderPropertyQuestion();
+    }
+
+    function goToPrevPropertyQuestion() {
+      if (propertyCurrentIndex === 0) return;
+      propertyCurrentIndex--;
+      renderPropertyQuestion();
+    }
+
+    // 依照三個面向的加總分數，判斷屬於哪一種類型。
+    // 同分時的優先順序：房貸壓力型 > 閒置待整理型 > 資產集中型
+    function determinePropertyType(totals) {
+      const max = Math.max(totals.cashFlowPressure, totals.assetConcentration, totals.idleProperty);
+
+      if (max <= PROPERTY_LOW_THRESHOLD) {
+        return "calm";
+      }
+
+      if (totals.cashFlowPressure === max) return "pressure";
+      if (totals.idleProperty === max) return "idle";
+      return "concentration";
+    }
+
+    function finishPropertyQuiz() {
+      const totals = { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 };
+
+      propertyQuizQuestions.forEach(function (q) {
+        const selectedIndex = propertyAnswers[q.id];
+        const opt = q.options[selectedIndex];
+        totals.cashFlowPressure += opt.scores.cashFlowPressure;
+        totals.assetConcentration += opt.scores.assetConcentration;
+        totals.idleProperty += opt.scores.idleProperty;
+      });
+
+      const typeKey = determinePropertyType(totals);
+      showPropertyResult(typeKey);
+      trackEvent("property_quiz_complete", { result_type: typeKey });
+    }
+
+    function showPropertyResult(typeKey) {
+      const content = propertyResultContent[typeKey];
+
+      document.getElementById("propertyQuizForm").style.display = "none";
+      document.getElementById("propertyProgressWrap").style.display = "none";
+
+      const resultBox = document.getElementById("propertyResult");
+      resultBox.style.display = "block";
+
+      const suggestionsHtml = content.suggestions.map(function (s) {
+        return `<li>${s}</li>`;
+      }).join("");
+
+      resultBox.innerHTML = `
+        <h3>${content.title}</h3>
+        <p>${content.description}</p>
+        <p><strong>提醒：</strong>${content.reminder}</p>
+        <p><strong>建議：</strong></p>
+        <ul>${suggestionsHtml}</ul>
+
+        <div class="result-cta">
+          <h4>想更清楚知道，這間房子下一步怎麼整理嗎？</h4>
+          <p>房子是很多人一生最大的一筆資產，但有資產，不一定代表資金有彈性。</p>
+          <p>預約 15 分鐘免費房產財務方向評估，我會先陪你整理房貸、現金流與未來資金需求，確認目前最值得釐清的是哪一步。</p>
+          <div class="result-actions">
+            <button type="button" class="btn btn-primary" id="propertyBookingCta">預約 15 分鐘免費評估</button>
+            <button type="button" class="btn btn-secondary" id="propertyRestartBtn">重新測驗</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("propertyBookingCta").addEventListener("click", function () {
+        trackEvent("property_quiz_booking_click", { result_type: typeKey });
+        goToBookingWithPropertyResult(content.typeName);
+      });
+
+      document.getElementById("propertyRestartBtn").addEventListener("click", restartPropertyQuiz);
+
+      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+
+    // 這一頁跟預約表單不在同一個檔案裡，所以改用網址參數，
+    // 把測驗結果帶到 index.html 的預約區，讓 index.html 讀取後自動帶入。
+    function goToBookingWithPropertyResult(typeName) {
+      const params = new URLSearchParams();
+      params.set("quiz_result", typeName);
+      params.set("lead_source", "property_quiz");
+      params.set("quiz_type", "property_health");
+
+      window.location.href = `index.html?${params.toString()}#booking`;
+    }
+
+    function restartPropertyQuiz() {
+      propertyAnswers = {};
+      propertyCurrentIndex = 0;
+
+      const resultBox = document.getElementById("propertyResult");
+      resultBox.style.display = "none";
+      resultBox.innerHTML = "";
+
+      document.getElementById("propertyQuizForm").style.display = "block";
+      document.getElementById("propertyProgressWrap").style.display = "block";
+
+      renderPropertyQuestion();
+
+      document.getElementById("property-quiz").scrollIntoView({ behavior: "smooth" });
+    }
+
+    renderPropertyQuestion();
+
+    document.getElementById("propertyNextBtn").addEventListener("click", goToNextPropertyQuestion);
+    document.getElementById("propertyPrevBtn").addEventListener("click", goToPrevPropertyQuestion);
+
+    // 房產測驗區塊第一次進入視窗時，回報「開始測驗」事件（只觸發一次）
+    if ("IntersectionObserver" in window) {
+      let propertyQuizStarted = false;
+      const propertyQuizSection = document.getElementById("property-quiz");
+
+      const propertyObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && !propertyQuizStarted) {
+            propertyQuizStarted = true;
+            trackEvent("property_quiz_start", {});
+            propertyObserver.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      propertyObserver.observe(propertyQuizSection);
+    }
+  </script>
+
+</body>
+</html>
