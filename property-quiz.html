@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>房產資金運用健康度測驗｜Zeta 財務整理室</title>
+  <title>房產安全測試｜Zeta 財務整理室</title>
 
   <style>
     :root {
@@ -17,6 +17,7 @@
       --white: #ffffff;
       --border: #eadfce;
       --soft: #efe3d2;
+      --danger: #b5482f;
     }
 
     * {
@@ -223,29 +224,31 @@
 
     .question-card {
       padding: 26px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .question-card:first-child {
-      padding-top: 0;
     }
 
     .question-card h3 {
       font-size: 20px;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       color: var(--text);
+    }
+
+    .question-sub {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 16px;
     }
 
     .option {
       display: block;
       background: #fffdf9;
       border: 1px solid var(--border);
-      padding: 13px 16px;
+      padding: 16px 18px;
       border-radius: 16px;
       margin: 10px 0;
       font-weight: 400;
       cursor: pointer;
       transition: 0.2s ease;
+      font-size: 15.5px;
     }
 
     .option:hover {
@@ -253,10 +256,17 @@
       background: #fff8ed;
     }
 
+    .option:has(input:checked) {
+      border-color: var(--gold);
+      background: #fbeed9;
+      font-weight: 700;
+    }
+
     .option input {
       width: auto;
-      margin-right: 8px;
+      margin-right: 10px;
       accent-color: var(--gold);
+      transform: scale(1.1);
     }
 
     .result {
@@ -305,9 +315,28 @@
       font-size: 18px;
     }
 
+    .safety-badge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: var(--gold);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .disclaimer {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px dashed var(--border);
+    }
+
     /* ===== 進度條與逐題導覽樣式 ===== */
     .quiz-progress-wrap {
-      margin-bottom: 24px;
+      margin-bottom: 8px;
     }
 
     .quiz-progress-label {
@@ -315,6 +344,10 @@
       color: var(--muted);
       margin-bottom: 10px;
       font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
     }
 
     .quiz-progress-bar {
@@ -339,12 +372,121 @@
       margin-top: 28px;
     }
 
+    .quiz-nav-buttons .btn {
+      flex: 1;
+      text-align: center;
+    }
+
     .quiz-hint {
       min-height: 20px;
-      color: #b5482f;
+      color: var(--danger);
       font-size: 14px;
       font-weight: 700;
       margin-top: 14px;
+    }
+
+    /* ===== 個資填寫表單樣式（沿用主站表單風格） ===== */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    label.form-label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      margin-top: 18px;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fffdf9;
+      font-size: 15px;
+      font-family: inherit;
+      color: var(--text);
+    }
+
+    input.field-invalid,
+    select.field-invalid {
+      border-color: var(--danger);
+    }
+
+    .field-error {
+      display: block;
+      min-height: 18px;
+      color: var(--danger);
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 6px;
+    }
+
+    .lead-intro {
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .lead-intro h3 {
+      font-size: 24px;
+      color: var(--gold-dark);
+      margin-bottom: 10px;
+    }
+
+    .lead-intro p {
+      color: var(--muted);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .consent-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: #fffdf9;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-top: 24px;
+    }
+
+    .consent-row input {
+      width: auto;
+      margin-top: 4px;
+      accent-color: var(--gold);
+      transform: scale(1.15);
+      flex-shrink: 0;
+    }
+
+    .consent-row label {
+      font-size: 14px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .privacy-note {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .submit-status {
+      min-height: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      margin-top: 14px;
+    }
+
+    .submit-status.is-error {
+      color: var(--danger);
+    }
+
+    .submit-status.is-loading {
+      color: var(--gold-dark);
     }
 
     footer {
@@ -356,6 +498,10 @@
     }
 
     @media (max-width: 860px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
       nav {
         flex-wrap: wrap;
         row-gap: 12px;
@@ -371,7 +517,20 @@
 
       .quiz-box,
       .form-box {
-        padding: 24px;
+        padding: 20px;
+      }
+
+      .option {
+        padding: 16px;
+        font-size: 15px;
+      }
+
+      .quiz-nav-buttons {
+        flex-wrap: wrap;
+      }
+
+      .quiz-nav-buttons .btn {
+        flex: 1 1 100%;
       }
     }
 
@@ -403,7 +562,7 @@
             <div class="nav-dropdown-menu">
               <a href="retirement.html">退休計算機</a>
               <a href="index.html#quiz">財務安全感測驗</a>
-              <a href="property-quiz.html">房產資金運用健康度測驗</a>
+              <a href="property-quiz.html">房產安全測試</a>
             </div>
           </div>
           <a href="index.html#services">服務項目</a>
@@ -419,35 +578,160 @@
     <section id="property-quiz">
       <div class="container">
         <div class="section-title">
-          <h2>房產資金運用健康度測驗</h2>
+          <h2>房產安全測試</h2>
           <p>
-            你的房子，帶來的是安全感，還是現金流壓力？<br>
-            房子可能是你最大的一筆資產，但有資產，不一定代表資金有彈性。
-            透過幾個簡單問題，看看你的房產、房貸與未來資金需求，目前比較接近哪一種狀態。
-            適合自己或家庭名下有房產的人。
+            不管你是正在準備買房、已經有房貸，還是名下已經有房產，
+            這份測驗會用幾個簡單的情境問題，幫你看懂目前的房貸壓力、現金流與資產運用方向，
+            大約 10 題，不需要提供精確的收入或存款數字。
           </p>
         </div>
 
         <div class="quiz-box">
 
-          <div class="quiz-progress-wrap" id="propertyProgressWrap">
-            <div class="quiz-progress-label" id="propertyProgressLabel">第 1 題，共 8 題</div>
-            <div class="quiz-progress-bar">
-              <div class="quiz-progress-fill" id="propertyProgressFill" style="width: 12.5%;"></div>
+          <!-- ============ 第一階段：逐題作答 ============ -->
+          <div id="propertyQuizStage">
+
+            <div class="quiz-progress-wrap" id="propertyProgressWrap">
+              <div class="quiz-progress-label">
+                <span id="propertyProgressLabel">第 1 題，共 10 題</span>
+                <span id="propertyProgressCount">已完成 0 題</span>
+              </div>
+              <div class="quiz-progress-bar">
+                <div class="quiz-progress-fill" id="propertyProgressFill" style="width: 10%;"></div>
+              </div>
             </div>
+
+            <form id="propertyQuizForm" novalidate>
+              <div id="propertyQuestionArea"></div>
+
+              <p class="quiz-hint" id="propertyHint" role="alert" aria-live="polite"></p>
+
+              <div class="quiz-nav-buttons">
+                <button type="button" class="btn btn-secondary" id="propertyPrevBtn">上一題</button>
+                <button type="button" class="btn btn-primary" id="propertyNextBtn">下一題</button>
+              </div>
+            </form>
           </div>
 
-          <form id="propertyQuizForm" novalidate>
-            <div id="propertyQuestionArea"></div>
+          <!-- ============ 第二階段：查看結果前必填的個人資料 ============ -->
+          <div id="propertyLeadStage" style="display:none;">
 
-            <p class="quiz-hint" id="propertyHint" role="alert" aria-live="polite"></p>
-
-            <div class="quiz-nav-buttons">
-              <button type="button" class="btn btn-secondary" id="propertyPrevBtn">上一題</button>
-              <button type="button" class="btn btn-primary" id="propertyNextBtn">下一題</button>
+            <div class="lead-intro">
+              <h3>你的房產安全分析已完成</h3>
+              <p>
+                請留下以下資料，完成送出後就能立即查看你的完整分析結果，
+                包含房產類型、安全程度與建議方向。
+              </p>
             </div>
-          </form>
 
+            <form id="propertyLeadForm" novalidate>
+
+              <div class="form-row">
+                <div>
+                  <label class="form-label" for="leadName">姓名</label>
+                  <input type="text" id="leadName" name="leadName" placeholder="例如：陳小姐" autocomplete="name">
+                  <span class="field-error" id="err-leadName"></span>
+                </div>
+
+                <div>
+                  <label class="form-label" for="leadPhone">手機號碼</label>
+                  <input type="tel" id="leadPhone" name="leadPhone" placeholder="例如：0912345678" autocomplete="tel" inputmode="numeric">
+                  <span class="field-error" id="err-leadPhone"></span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div>
+                  <label class="form-label" for="leadEmail">Email</label>
+                  <input type="email" id="leadEmail" name="leadEmail" placeholder="例如：name@example.com" autocomplete="email">
+                  <span class="field-error" id="err-leadEmail"></span>
+                </div>
+
+                <div>
+                  <label class="form-label" for="leadLine">LINE ID</label>
+                  <input type="text" id="leadLine" name="leadLine" placeholder="請輸入你的 LINE ID">
+                  <span class="field-error" id="err-leadLine"></span>
+                </div>
+              </div>
+
+              <div class="form-row">
+                <div>
+                  <label class="form-label" for="leadAge">年齡區間</label>
+                  <select id="leadAge" name="leadAge">
+                    <option value="">請選擇</option>
+                    <option>20歲以下</option>
+                    <option>21～25歲</option>
+                    <option>26～30歲</option>
+                    <option>31～35歲</option>
+                    <option>36～40歲</option>
+                    <option>41～50歲</option>
+                    <option>51～60歲</option>
+                    <option>61歲以上</option>
+                  </select>
+                  <span class="field-error" id="err-leadAge"></span>
+                </div>
+
+                <div>
+                  <label class="form-label" for="leadJob">職業類型</label>
+                  <select id="leadJob" name="leadJob">
+                    <option value="">請選擇</option>
+                    <option>受雇上班族</option>
+                    <option>軍公教</option>
+                    <option>自營業／企業主</option>
+                    <option>自由工作者</option>
+                    <option>專業工作者</option>
+                    <option>家庭照顧者</option>
+                    <option>退休</option>
+                    <option>其他</option>
+                  </select>
+                  <span class="field-error" id="err-leadJob"></span>
+                </div>
+              </div>
+
+              <label class="form-label" for="leadCity">所在縣市</label>
+              <select id="leadCity" name="leadCity">
+                <option value="">請選擇</option>
+                <option>台北市</option>
+                <option>新北市</option>
+                <option>桃園市</option>
+                <option>台中市</option>
+                <option>台南市</option>
+                <option>高雄市</option>
+                <option>基隆市</option>
+                <option>新竹市</option>
+                <option>新竹縣</option>
+                <option>苗栗縣</option>
+                <option>彰化縣</option>
+                <option>南投縣</option>
+                <option>雲林縣</option>
+                <option>嘉義市</option>
+                <option>嘉義縣</option>
+                <option>屏東縣</option>
+                <option>宜蘭縣</option>
+                <option>花蓮縣</option>
+                <option>台東縣</option>
+                <option>澎湖縣</option>
+                <option>金門縣</option>
+                <option>連江縣</option>
+              </select>
+              <span class="field-error" id="err-leadCity"></span>
+
+              <div class="consent-row">
+                <input type="checkbox" id="leadConsent" name="leadConsent">
+                <label for="leadConsent">我已閱讀並同意本測驗蒐集上述資料，用於提供測驗結果、財務需求分析及相關服務聯繫。</label>
+              </div>
+              <span class="field-error" id="err-leadConsent"></span>
+              <p class="privacy-note">你填寫的資料僅用於本次分析與後續聯繫，不會公開顯示。</p>
+
+              <button class="btn btn-primary" type="button" id="propertyLeadSubmitBtn" style="margin-top:22px; width:100%;">
+                查看我的完整分析結果
+              </button>
+
+              <p class="submit-status" id="propertyLeadStatus" role="status" aria-live="polite"></p>
+            </form>
+          </div>
+
+          <!-- ============ 第三階段：完整結果 ============ -->
           <div id="propertyResult" class="result"></div>
 
         </div>
@@ -485,18 +769,28 @@
     });
 
     /* =========================================================================
-       房產資金運用健康度測驗
-       ---------------------------------------------------------------------
-       這一整段負責「房產資金運用健康度測驗」的題目資料、計分邏輯與畫面渲染。
-       如果之後要調整題目、選項文字或分數，只需要修改下面的
-       propertyQuizQuestions 這個陣列，不需要動到渲染或計分的程式邏輯。
+       房產安全測試（property-quiz.html）
+       =========================================================================
+       這一整段負責：
+       1) 測驗題目資料與計分規則（PROPERTY_QUIZ_QUESTIONS / SCORE_THRESHOLDS）
+       2) 逐題作答與進度顯示
+       3) 測驗完成後，先收集個人資料，驗證通過並送出成功後，才解鎖完整結果
+       4) 將資料送到 Google Apps Script（Google 試算表 + Email 通知）
+
+       如果之後要調整題目文字、選項或分數，只需要修改
+       PROPERTY_QUIZ_QUESTIONS 這個陣列，以及最下方的 SCORE_THRESHOLDS 門檻值，
+       不需要更動渲染、驗證或送出邏輯。
        ========================================================================= */
 
     // -------------------------------------------------------------------
-    // 通用事件追蹤函式
-    // 目前網站還沒有串接 GA / GTM 等分析工具，這個函式先寫成「不會出錯」的版本。
-    // 未來如果要串接分析工具，只要把裡面的邏輯換成實際的追蹤程式碼即可，
-    // 呼叫這個函式的地方完全不需要修改。
+    // 0. Google Apps Script 部署網址（請部署後，把網址貼在下面的引號中間）
+    //    尚未部署前，請保持這個預設文字，不要自行填入不存在的網址。
+    // -------------------------------------------------------------------
+    const GOOGLE_APPS_SCRIPT_URL = "請貼上部署網址";
+
+    // -------------------------------------------------------------------
+    // 通用事件追蹤函式（沿用主站作法：尚未串接 GA/GTM 時，僅在 console 留紀錄，
+    // 內容不含任何個人資料，之後如需串接分析工具，只要修改這裡即可）
     // -------------------------------------------------------------------
     function trackEvent(eventName, params) {
       try {
@@ -505,7 +799,6 @@
         } else if (window.dataLayer && typeof window.dataLayer.push === "function") {
           window.dataLayer.push(Object.assign({ event: eventName }, params || {}));
         } else {
-          // 尚未串接任何分析工具時，先在 console 留下紀錄，方便之後除錯與串接
           console.log("[trackEvent]", eventName, params || {});
         }
       } catch (err) {
@@ -514,191 +807,202 @@
     }
 
     // -------------------------------------------------------------------
-    // 題目資料
+    // 1. 題目資料
     // 每一題有：
-    //   id      -> 這一題的識別碼（用來對應 radio 的 name）
-    //   text    -> 題目文字
-    //   options -> 這一題的所有選項，每個選項有：
-    //       label  -> 顯示在畫面上的文字
-    //       scores -> 這個選項在三個面向各自加了多少分
-    //                 cashFlowPressure   現金流壓力（房貸與支出造成的壓力）
-    //                 assetConcentration 資產集中程度（錢是不是都卡在房子裡）
-    //                 idleProperty       房產閒置或用途不明確程度
-    // 分數沒有標準答案，是依照「這個選項聽起來越接近哪一種狀態」來給分，
-    // 分數越高代表越接近該面向所描述的狀態。如果之後想調整測驗的敏感度，
-    // 只需要調整這裡的數字。
+    //   id       -> 題目識別碼
+    //   text     -> 題目文字
+    //   type     -> "single"（單選）或 "multi"（可複選）
+    //   options  -> 每個選項有 value / label / scores
+    //       scores 內可包含以下欄位（沒有列出的欄位視為 0）：
+    //         mortgagePressure    房貸壓力分數（越高代表房貸負擔越重）
+    //         cashFlowSafety      現金流安全分數（越高代表現金流越安全，只出現在第5題）
+    //         emergencyFund       緊急預備金分數（越高代表預備金越充足）
+    //         otherDebt           其他負債分數（越高代表負債壓力越大）
+    //         activationPotential 房產活化潛力分數（越高代表越有活化空間）
     // -------------------------------------------------------------------
-    const propertyQuizQuestions = [
+    const PROPERTY_QUIZ_QUESTIONS = [
       {
-        id: "p1",
-        text: "這間房產目前的主要使用方式是？",
+        id: "q1",
+        text: "目前的房產狀態",
+        type: "single",
         options: [
-          { label: "自己或家人居住", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "穩定出租中", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "有出租，但收入不穩定", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 1 } },
-          { label: "長期閒置或很少使用", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 3 } },
-          { label: "和家人共同持有，還沒有明確安排", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 2 } }
+          { value: "not_yet", label: "尚未買房，正在規劃中", scores: {} },
+          { value: "has_mortgage", label: "已買房，目前有房貸", scores: { mortgagePressure: 1 } },
+          { value: "light_mortgage", label: "名下有房，但房貸負擔不高", scores: { mortgagePressure: 0 } },
+          { value: "no_mortgage", label: "名下有房，目前沒有房貸", scores: { activationPotential: 1 } },
+          { value: "multi_property", label: "名下有不只一間房產", scores: { activationPotential: 2 } }
         ]
       },
       {
-        id: "p2",
-        text: "每月房貸支出大約占家庭收入多少？",
+        id: "q2",
+        text: "目前房產的主要使用方式",
+        type: "single",
         options: [
-          { label: "沒有房貸", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "20% 以下", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "20%～35%", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
-          { label: "35%～50%", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
-          { label: "50% 以上", scores: { cashFlowPressure: 3, assetConcentration: 0, idleProperty: 0 } },
-          { label: "我不太清楚", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 1 } }
+          { value: "not_yet", label: "尚未買房", scores: {} },
+          { value: "self_use", label: "自住", scores: {} },
+          { value: "rent", label: "出租", scores: {} },
+          { value: "vacant", label: "空置", scores: { activationPotential: 2 } },
+          { value: "family", label: "家人居住", scores: { activationPotential: 1 } },
+          { value: "self_and_rent", label: "自住與出租皆有", scores: {} }
         ]
       },
       {
-        id: "p3",
-        text: "支付房貸與房屋相關支出後，你每個月還能穩定存錢嗎？",
+        id: "q3",
+        text: "每月房貸支出",
+        type: "single",
         options: [
-          { label: "可以，而且仍有充足餘裕", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "可以固定存一部分", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "有剩下才存，不太固定", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
-          { label: "幾乎存不到錢", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
-          { label: "有時還需要動用存款", scores: { cashFlowPressure: 3, assetConcentration: 0, idleProperty: 0 } }
+          { value: "no_mortgage", label: "目前沒有房貸", scores: { mortgagePressure: 0 } },
+          { value: "under20k", label: "2萬元以下", scores: { mortgagePressure: 0 } },
+          { value: "20to40k", label: "2萬～4萬元", scores: { mortgagePressure: 1 } },
+          { value: "40to60k", label: "4萬～6萬元", scores: { mortgagePressure: 2 } },
+          { value: "60to100k", label: "6萬～10萬元", scores: { mortgagePressure: 3 } },
+          { value: "over100k", label: "10萬元以上", scores: { mortgagePressure: 4 } },
+          { value: "unknown", label: "不清楚", scores: { mortgagePressure: 1 } }
         ]
       },
       {
-        id: "p4",
-        text: "你清楚這間房產目前的市值、貸款餘額與持有成本嗎？",
+        id: "q4",
+        text: "房貸約占家庭每月收入的比例",
+        type: "single",
         options: [
-          { label: "很清楚，而且會定期整理", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "大致清楚", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 1 } },
-          { label: "只知道其中一部分", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 2 } },
-          { label: "幾乎不清楚", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 3 } }
+          { value: "no_mortgage", label: "目前沒有房貸", scores: { mortgagePressure: 0 } },
+          { value: "under30", label: "30%以下", scores: { mortgagePressure: 0 } },
+          { value: "31to40", label: "31%～40%", scores: { mortgagePressure: 1 } },
+          { value: "41to50", label: "41%～50%", scores: { mortgagePressure: 3 } },
+          { value: "over50", label: "超過50%", scores: { mortgagePressure: 4 } },
+          { value: "unknown", label: "不清楚", scores: { mortgagePressure: 2 } }
         ]
       },
       {
-        id: "p5",
-        text: "房產大約占你或家庭總資產多少比例？",
+        id: "q5",
+        text: "扣除房貸與必要生活支出後的狀況",
+        type: "single",
         options: [
-          { label: "50% 以下", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "50%～80%", scores: { cashFlowPressure: 0, assetConcentration: 2, idleProperty: 0 } },
-          { label: "80% 以上", scores: { cashFlowPressure: 0, assetConcentration: 3, idleProperty: 0 } },
-          { label: "我不太清楚", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 1 } }
+          { value: "stable_save", label: "每月仍能穩定存錢", scores: { cashFlowSafety: 4 } },
+          { value: "occasional_save", label: "偶爾可以存錢", scores: { cashFlowSafety: 3 } },
+          { value: "breakeven", label: "收支大致打平", scores: { cashFlowSafety: 2 } },
+          { value: "use_savings", label: "經常需要動用存款", scores: { cashFlowSafety: 1 } },
+          { value: "borrow_sometimes", label: "偶爾需要借款或使用循環信用", scores: { cashFlowSafety: 0 } }
         ]
       },
       {
-        id: "p6",
-        text: "這間房產目前帶來的收入，能負擔相關持有成本嗎？",
+        id: "q6",
+        text: "緊急預備金可以支付多久的生活費與房貸",
+        type: "single",
         options: [
-          { label: "可以，而且還有穩定結餘", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "大致可以打平", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "只能負擔一部分", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 1 } },
-          { label: "沒有產生收入", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 2 } },
-          { label: "目前是自住，不以收入為目的", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } }
+          { value: "over6m", label: "6個月以上", scores: { emergencyFund: 4 } },
+          { value: "3to6m", label: "3～6個月", scores: { emergencyFund: 3 } },
+          { value: "1to3m", label: "1～3個月", scores: { emergencyFund: 2 } },
+          { value: "under1m", label: "不到1個月", scores: { emergencyFund: 1 } },
+          { value: "none", label: "目前沒有預備金", scores: { emergencyFund: 0 } },
+          { value: "unknown", label: "不清楚", scores: { emergencyFund: 1 } }
         ]
       },
       {
-        id: "p7",
-        text: "未來三至五年，你是否有較大的資金需求？",
+        id: "q7",
+        text: "除了房貸以外，是否還有其他負債",
+        type: "single",
         options: [
-          { label: "暫時沒有", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "退休生活", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
-          { label: "換屋或購屋", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
-          { label: "創業或事業發展", scores: { cashFlowPressure: 1, assetConcentration: 1, idleProperty: 0 } },
-          { label: "子女教育或家庭支出", scores: { cashFlowPressure: 1, assetConcentration: 0, idleProperty: 0 } },
-          { label: "投資與資產配置", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 0 } },
-          { label: "還不確定，但希望增加資金彈性", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 1 } }
+          { value: "none", label: "沒有其他負債", scores: { otherDebt: 0 } },
+          { value: "low_burden", label: "有，但每月負擔不高", scores: { otherDebt: 1 } },
+          { value: "credit_or_car", label: "有信貸或車貸", scores: { otherDebt: 2 } },
+          { value: "card_installment", label: "有卡費分期或循環利息", scores: { otherDebt: 3 } },
+          { value: "multiple", label: "同時有兩種以上負債", scores: { otherDebt: 4 } }
         ]
       },
       {
-        id: "p8",
-        text: "如果突然需要一筆較大的資金，你目前最可能怎麼處理？",
+        id: "q8",
+        text: "是否了解目前的房貸條件",
+        type: "single",
         options: [
-          { label: "已經有準備好的資金", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "使用現有存款", scores: { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 } },
-          { label: "賣出其他投資", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 0 } },
-          { label: "申請貸款或增加負債", scores: { cashFlowPressure: 2, assetConcentration: 0, idleProperty: 0 } },
-          { label: "可能需要出售房產", scores: { cashFlowPressure: 0, assetConcentration: 3, idleProperty: 0 } },
-          { label: "目前不知道怎麼安排", scores: { cashFlowPressure: 0, assetConcentration: 1, idleProperty: 2 } }
+          { value: "clear", label: "清楚知道利率、剩餘年限與月付金", scores: { mortgagePressure: 0 } },
+          { value: "mostly_clear", label: "大致知道", scores: { mortgagePressure: 0 } },
+          { value: "only_payment", label: "只知道每月繳多少", scores: { mortgagePressure: 1 } },
+          { value: "unclear", label: "不太清楚", scores: { mortgagePressure: 2 } },
+          { value: "no_mortgage", label: "目前沒有房貸", scores: { mortgagePressure: 0 } }
+        ]
+      },
+      {
+        id: "q9",
+        text: "未來三年是否有較大的資金需求",
+        type: "multi",
+        options: [
+          { value: "no_need", label: "沒有明確的大額資金需求", scores: {} },
+          { value: "buy_or_switch", label: "準備買房或換屋", scores: { activationPotential: 1 } },
+          { value: "business", label: "創業或事業投資", scores: { activationPotential: 2 } },
+          { value: "education", label: "子女教育", scores: { activationPotential: 1 } },
+          { value: "retirement", label: "退休準備", scores: { activationPotential: 2 } },
+          { value: "investment", label: "投資或資產配置", scores: { activationPotential: 2 } },
+          { value: "renovation", label: "裝修或家庭支出", scores: { activationPotential: 1 } },
+          { value: "reduce_burden", label: "希望降低目前的月付壓力", scores: { mortgagePressure: 1 } }
+        ]
+      },
+      {
+        id: "q10",
+        text: "如果收入暫時中斷，房貸與生活費可以維持多久",
+        type: "single",
+        options: [
+          { value: "over6m", label: "6個月以上", scores: { emergencyFund: 4 } },
+          { value: "3to6m", label: "3～6個月", scores: { emergencyFund: 3 } },
+          { value: "1to3m", label: "1～3個月", scores: { emergencyFund: 2 } },
+          { value: "under1m", label: "不到1個月", scores: { emergencyFund: 1 } },
+          { value: "cannot_afford", label: "目前無法負擔", scores: { emergencyFund: 0 } },
+          { value: "unknown", label: "不清楚", scores: { emergencyFund: 1 } }
         ]
       }
     ];
 
     // -------------------------------------------------------------------
-    // 結果文案
-    // key 對應 determinePropertyType() 判斷出來的類型：
-    //   pressure      房貸壓力型
-    //   idle          閒置待整理型
-    //   concentration 資產集中型
-    //   calm          安心自住型
+    // 2. 計分門檻設定（集中放在這裡，方便之後調整）
+    //    數字越低代表越容易被判斷為「有風險／需要留意」的一方。
     // -------------------------------------------------------------------
-    const propertyResultContent = {
-      calm: {
-        typeName: "安心自住型",
-        title: "你的房產目前比較接近「安心自住型」",
-        description: "目前房產與生活現金流大致維持在平衡狀態。房子帶給你的主要價值是居住與安全感，暫時沒有明顯的資金壓力。",
-        reminder: "穩定不代表不需要整理。未來仍可以確認退休後的房貸、修繕費用、持有成本，以及房產是否符合下一階段的人生安排。",
-        suggestions: [
-          "確認未來三至五年的居住計畫",
-          "定期整理房貸餘額與房屋持有成本",
-          "預留修繕與家庭緊急資金"
-        ]
-      },
-      pressure: {
-        typeName: "房貸壓力型",
-        title: "你的房產目前比較接近「房貸壓力型」",
-        description: "你不是沒有資產，而是房貸與房屋相關支出可能占用了較多現金流。表面上房貸還繳得動，但存款、投資與生活選擇的空間可能正在被壓縮。",
-        reminder: "現在最重要的不是急著做任何決定，而是先看清楚房貸、收入、家庭支出與未來資金需求之間的關係。",
-        suggestions: [
-          "計算完整房屋持有成本",
-          "確認房貸占家庭收入的實際比例",
-          "盤點未來是否有退休、教育或換屋需求"
-        ]
-      },
-      concentration: {
-        typeName: "資產集中型",
-        title: "你的房產目前比較接近「資產集中型」",
-        description: "你可能擁有一定的資產，但大部分價值集中在房產裡。帳面上看起來有資產，真正需要使用資金時，彈性可能沒有想像中充足。",
-        reminder: "房產本身不一定有問題，重點是它和現金、投資、退休及家庭目標之間，是否有清楚的分工。",
-        suggestions: [
-          "重新計算房產占總資產的比例",
-          "確認手上可動用資金是否充足",
-          "整理未來三至五年的大型資金需求"
-        ]
-      },
-      idle: {
-        typeName: "閒置待整理型",
-        title: "你的房產目前比較接近「閒置待整理型」",
-        description: "這間房產目前可能沒有充分發揮居住、收入或資金運用的功能，也可能因為共同持有、家庭安排或缺乏規劃，而暫時維持原狀。",
-        reminder: "保留房產並不是錯，但即使沒有房貸，仍可能有稅費、管理、修繕與機會成本。先看懂持有目的，再決定下一步會更安心。",
-        suggestions: [
-          "確認繼續持有的主要原因",
-          "整理每年的實際持有成本",
-          "與家人釐清未來用途與決策方式"
-        ]
-      }
+    const SCORE_THRESHOLDS = {
+      MORTGAGE_PRESSURE_HIGH: 6,   // 房貸壓力分數達到這個數字以上，視為壓力偏高
+      MORTGAGE_RATIO_RISK_SCORE: 3, // 第4題「房貸占收入比例」單題分數 >= 3（即 41～50% 或超過 50%）即視為比例偏高
+      CASHFLOW_SAFETY_RISK: 1,     // 現金流安全分數 <= 1，視為現金流吃緊（經常動用存款／需要借款）
+      EMERGENCY_FUND_RISK: 1,      // 緊急預備金分數 <= 1，視為預備金不足
+      OTHER_DEBT_RISK: 3           // 其他負債分數 >= 3，視為負債壓力偏高（卡費循環或多重負債）
     };
 
-    // 三個面向的分數都低於這個門檻時，視為「安心自住型」。
-    // 數字越小，代表越容易被判斷成安心自住型；可依實際狀況調整。
-    const PROPERTY_LOW_THRESHOLD = 2;
-
     let propertyCurrentIndex = 0;
-    let propertyAnswers = {};
+    let propertyAnswers = {}; // 單選存 value 字串；複選（q9）存字串陣列
+    let propertyComputation = null; // 測驗完成後，計算出的分數與類型，暫存在記憶體中
+
+    function countAnsweredQuestions() {
+      return PROPERTY_QUIZ_QUESTIONS.reduce(function (count, q) {
+        const ans = propertyAnswers[q.id];
+        if (q.type === "multi") {
+          return count + (Array.isArray(ans) && ans.length > 0 ? 1 : 0);
+        }
+        return count + (ans ? 1 : 0);
+      }, 0);
+    }
 
     function renderPropertyQuestion() {
-      const q = propertyQuizQuestions[propertyCurrentIndex];
-      const total = propertyQuizQuestions.length;
+      const q = PROPERTY_QUIZ_QUESTIONS[propertyCurrentIndex];
+      const total = PROPERTY_QUIZ_QUESTIONS.length;
 
       document.getElementById("propertyProgressLabel").textContent =
         `第 ${propertyCurrentIndex + 1} 題，共 ${total} 題`;
+      document.getElementById("propertyProgressCount").textContent =
+        `已完成 ${countAnsweredQuestions()} 題`;
       document.getElementById("propertyProgressFill").style.width =
         `${((propertyCurrentIndex + 1) / total) * 100}%`;
 
       const savedAnswer = propertyAnswers[q.id];
+      const inputType = q.type === "multi" ? "checkbox" : "radio";
+      const subText = q.type === "multi" ? '<p class="question-sub">這題可以複選，請選擇所有符合的情況。</p>' : "";
 
-      const optionsHtml = q.options.map(function (opt, i) {
-        const checked = savedAnswer === i ? "checked" : "";
+      const optionsHtml = q.options.map(function (opt) {
+        let checked = "";
+        if (q.type === "multi") {
+          checked = Array.isArray(savedAnswer) && savedAnswer.indexOf(opt.value) !== -1 ? "checked" : "";
+        } else {
+          checked = savedAnswer === opt.value ? "checked" : "";
+        }
         return `
           <label class="option">
-            <input type="radio" name="${q.id}" value="${i}" ${checked}>
+            <input type="${inputType}" name="${q.id}" value="${opt.value}" ${checked}>
             ${opt.label}
           </label>
         `;
@@ -707,14 +1011,36 @@
       document.getElementById("propertyQuestionArea").innerHTML = `
         <div class="question-card">
           <h3>${propertyCurrentIndex + 1}. ${q.text}</h3>
+          ${subText}
           ${optionsHtml}
         </div>
       `;
 
       document.querySelectorAll(`input[name="${q.id}"]`).forEach(function (input) {
         input.addEventListener("change", function () {
-          propertyAnswers[q.id] = Number(input.value);
+          if (q.type === "multi") {
+            const checkedInputs = document.querySelectorAll(`input[name="${q.id}"]:checked`);
+            let values = Array.from(checkedInputs).map(function (el) { return el.value; });
+
+            // 若使用者勾選「沒有明確的大額資金需求」，視為單一答案，自動取消其他選項
+            if (input.value === "no_need" && input.checked) {
+              document.querySelectorAll(`input[name="${q.id}"]`).forEach(function (el) {
+                if (el.value !== "no_need") el.checked = false;
+              });
+              values = ["no_need"];
+            } else if (input.checked && input.value !== "no_need") {
+              const noNeedInput = document.querySelector(`input[name="${q.id}"][value="no_need"]`);
+              if (noNeedInput) noNeedInput.checked = false;
+              values = values.filter(function (v) { return v !== "no_need"; });
+            }
+
+            propertyAnswers[q.id] = values;
+          } else {
+            propertyAnswers[q.id] = input.value;
+          }
           hidePropertyHint();
+          document.getElementById("propertyProgressCount").textContent =
+            `已完成 ${countAnsweredQuestions()} 題`;
           trackEvent("property_quiz_answer", { question: q.id });
         });
       });
@@ -722,9 +1048,8 @@
       hidePropertyHint();
 
       document.getElementById("propertyPrevBtn").disabled = propertyCurrentIndex === 0;
-
       document.getElementById("propertyNextBtn").textContent =
-        propertyCurrentIndex === total - 1 ? "查看我的房產資金狀態" : "下一題";
+        propertyCurrentIndex === total - 1 ? "查看我的分析結果" : "下一題";
     }
 
     function showPropertyHint(message) {
@@ -735,18 +1060,22 @@
       document.getElementById("propertyHint").textContent = "";
     }
 
-    function goToNextPropertyQuestion() {
-      const q = propertyQuizQuestions[propertyCurrentIndex];
-      const answer = document.querySelector(`input[name="${q.id}"]:checked`);
+    function isCurrentQuestionAnswered() {
+      const q = PROPERTY_QUIZ_QUESTIONS[propertyCurrentIndex];
+      const ans = propertyAnswers[q.id];
+      if (q.type === "multi") {
+        return Array.isArray(ans) && ans.length > 0;
+      }
+      return !!ans;
+    }
 
-      if (!answer) {
+    function goToNextPropertyQuestion() {
+      if (!isCurrentQuestionAnswered()) {
         showPropertyHint("請選擇一個答案後，再繼續下一題唷。");
         return;
       }
 
-      propertyAnswers[q.id] = Number(answer.value);
-
-      if (propertyCurrentIndex === propertyQuizQuestions.length - 1) {
+      if (propertyCurrentIndex === PROPERTY_QUIZ_QUESTIONS.length - 1) {
         finishPropertyQuiz();
         return;
       }
@@ -761,102 +1090,247 @@
       renderPropertyQuestion();
     }
 
-    // 依照三個面向的加總分數，判斷屬於哪一種類型。
-    // 同分時的優先順序：房貸壓力型 > 閒置待整理型 > 資產集中型
-    function determinePropertyType(totals) {
-      const max = Math.max(totals.cashFlowPressure, totals.assetConcentration, totals.idleProperty);
+    // -------------------------------------------------------------------
+    // 3. 計分與分類邏輯
+    //    先計算六項指標分數，再依照「是否已有房產」＋「風險門檻」判斷四種類型。
+    //    判斷優先順序（與需求文件一致）：
+    //      1) 尚未買房 -> 購屋準備型
+    //      2) 已有房，且房貸比例高／現金流吃緊／預備金不足／負債壓力高 -> 現金流壓力型
+    //      3) 已有房，現金流與房貸尚可，且有明確資金需求 -> 資產沉睡型
+    //      4) 已有房，各項指標都相對安全 -> 房產穩健型
+    // -------------------------------------------------------------------
+    function computePropertyScores() {
+      const scores = {
+        mortgagePressure: 0,
+        cashFlowSafety: 0,
+        emergencyFund: 0,
+        otherDebt: 0,
+        activationPotential: 0
+      };
 
-      if (max <= PROPERTY_LOW_THRESHOLD) {
-        return "calm";
+      // q6 與 q10 都是在描述「緊急預備金／收入中斷後的撐持力」，
+      // 分別計算後取平均，作為最終的緊急預備金分數。
+      let emergencyFundParts = [];
+
+      PROPERTY_QUIZ_QUESTIONS.forEach(function (q) {
+        const answer = propertyAnswers[q.id];
+
+        function applyOption(value) {
+          const opt = q.options.find(function (o) { return o.value === value; });
+          if (!opt) return;
+          Object.keys(opt.scores).forEach(function (key) {
+            if (key === "emergencyFund" && (q.id === "q6" || q.id === "q10")) {
+              emergencyFundParts.push(opt.scores[key]);
+              return;
+            }
+            scores[key] = (scores[key] || 0) + opt.scores[key];
+          });
+        }
+
+        if (q.type === "multi") {
+          (answer || []).forEach(applyOption);
+        } else {
+          applyOption(answer);
+        }
+      });
+
+      scores.emergencyFund = emergencyFundParts.length
+        ? Math.round(emergencyFundParts.reduce(function (a, b) { return a + b; }, 0) / emergencyFundParts.length)
+        : 0;
+
+      // 第4題「房貸占收入比例」這一題的單題分數，用來判斷比例是否偏高
+      const q4Opt = PROPERTY_QUIZ_QUESTIONS[3].options.find(function (o) { return o.value === propertyAnswers.q4; });
+      const mortgageRatioScore = q4Opt ? (q4Opt.scores.mortgagePressure || 0) : 0;
+
+      const hasFundingNeed = Array.isArray(propertyAnswers.q9) &&
+        propertyAnswers.q9.some(function (v) { return v !== "no_need"; });
+
+      // 購屋準備程度：只有「尚未買房」的使用者才需要參考這個分數，
+      // 用現金流安全 + 緊急預備金，來大致反映購屋準備的完整度。
+      const purchaseReadiness = scores.cashFlowSafety + scores.emergencyFund +
+        (Array.isArray(propertyAnswers.q9) && propertyAnswers.q9.indexOf("buy_or_switch") !== -1 ? 1 : 0);
+
+      return {
+        scores: scores,
+        mortgageRatioScore: mortgageRatioScore,
+        hasFundingNeed: hasFundingNeed,
+        purchaseReadiness: purchaseReadiness
+      };
+    }
+
+    function determinePropertyType(computation) {
+      const hasProperty = propertyAnswers.q1 !== "not_yet";
+
+      if (!hasProperty) {
+        return "purchase_prep";
       }
 
-      if (totals.cashFlowPressure === max) return "pressure";
-      if (totals.idleProperty === max) return "idle";
-      return "concentration";
+      const s = computation.scores;
+
+      const mortgageRatioHigh = computation.mortgageRatioScore >= SCORE_THRESHOLDS.MORTGAGE_RATIO_RISK_SCORE;
+      const mortgagePressureHigh = s.mortgagePressure >= SCORE_THRESHOLDS.MORTGAGE_PRESSURE_HIGH;
+      const cashFlowRisk = s.cashFlowSafety <= SCORE_THRESHOLDS.CASHFLOW_SAFETY_RISK;
+      const emergencyRisk = s.emergencyFund <= SCORE_THRESHOLDS.EMERGENCY_FUND_RISK;
+      const debtRisk = s.otherDebt >= SCORE_THRESHOLDS.OTHER_DEBT_RISK;
+
+      if (mortgageRatioHigh || mortgagePressureHigh || cashFlowRisk || emergencyRisk || debtRisk) {
+        return "cashflow_risk";
+      }
+
+      if (computation.hasFundingNeed) {
+        return "idle_asset";
+      }
+
+      return "stable";
     }
+
+    // -------------------------------------------------------------------
+    // 4. 依照分數與答案，產生較有針對性的「三項觀察」與「兩項建議」
+    // -------------------------------------------------------------------
+    function getAnswerLabel(questionId, value) {
+      const q = PROPERTY_QUIZ_QUESTIONS.find(function (item) { return item.id === questionId; });
+      if (!q) return "";
+      const opt = q.options.find(function (o) { return o.value === value; });
+      return opt ? opt.label : "";
+    }
+
+    function buildObservations(typeKey, computation) {
+      const s = computation.scores;
+      const observations = [];
+
+      const q4Label = getAnswerLabel("q4", propertyAnswers.q4);
+      const q5Label = getAnswerLabel("q5", propertyAnswers.q5);
+      const q6Label = getAnswerLabel("q6", propertyAnswers.q6);
+      const q7Label = getAnswerLabel("q7", propertyAnswers.q7);
+      const q10Label = getAnswerLabel("q10", propertyAnswers.q10);
+
+      if (typeKey === "purchase_prep") {
+        observations.push("你目前對每月收支的掌握度是：「" + q5Label + "」，這會直接影響你能負擔的房貸區間。");
+        observations.push("緊急預備金與收入中斷後的撐持力，會決定買房後生活是否還有緩衝空間。");
+        observations.push(computation.hasFundingNeed
+          ? "除了買房，你在未來三年還有其他資金需求，購屋預算需要一併考慮這些安排。"
+          : "目前沒有其他明確的大額資金需求，比較能專心規劃購屋預算。");
+        return observations;
+      }
+
+      observations.push("房貸占家庭收入的比例，你選擇的是「" + q4Label + "」。");
+      observations.push("扣除房貸與必要生活支出後，你的狀況是「" + q5Label + "」。");
+
+      if (s.otherDebt >= SCORE_THRESHOLDS.OTHER_DEBT_RISK) {
+        observations.push("除了房貸之外，你也提到「" + q7Label + "」，這會一起影響每月的資金彈性。");
+      } else if (s.emergencyFund <= SCORE_THRESHOLDS.EMERGENCY_FUND_RISK) {
+        observations.push("緊急預備金與收入中斷後的撐持力（" + q6Label + "／" + q10Label + "）目前偏薄弱。");
+      } else if (computation.hasFundingNeed) {
+        observations.push("未來三年你已經有明確的資金需求，房產可能是可以一併考慮的資源之一。");
+      } else {
+        observations.push("目前緊急預備金的狀況是「" + q6Label + "」，整體來說相對穩定。");
+      }
+
+      return observations;
+    }
+
+    function buildImprovements(typeKey, computation) {
+      const s = computation.scores;
+
+      if (typeKey === "purchase_prep") {
+        return [
+          "先抓出「安全購屋預算」，而不是先問銀行願意貸多少給你",
+          "把頭期款、裝潢、稅費和緊急預備金一起列入購屋準備金額"
+        ];
+      }
+
+      if (typeKey === "cashflow_risk") {
+        const items = [];
+        if (computation.mortgageRatioScore >= SCORE_THRESHOLDS.MORTGAGE_RATIO_RISK_SCORE || s.mortgagePressure >= SCORE_THRESHOLDS.MORTGAGE_PRESSURE_HIGH) {
+          items.push("重新檢視房貸結構，確認利率、年限與月付金是否還有調整空間");
+        }
+        if (s.emergencyFund <= SCORE_THRESHOLDS.EMERGENCY_FUND_RISK) {
+          items.push("優先補足緊急預備金，降低收入中斷時的風險");
+        }
+        if (s.otherDebt >= SCORE_THRESHOLDS.OTHER_DEBT_RISK) {
+          items.push("盤點目前的負債順序，優先處理利率較高的卡費或循環信用");
+        }
+        if (items.length < 2) {
+          items.push("重新整理每月固定支出，找出可以調整的空間");
+        }
+        return items.slice(0, 2);
+      }
+
+      if (typeKey === "idle_asset") {
+        return [
+          "先確認房產目前的持有目的，以及是否符合你未來的資金需求",
+          "搭配收入、利率與還款能力，評估房產活化的可行方向"
+        ];
+      }
+
+      return [
+        "定期檢視房貸利率與剩餘年限，確認是否仍是最適合的條件",
+        "檢視資產配置，讓房產之外的資金也能對應人生目標"
+      ];
+    }
+
+    function buildNextAction(typeKey) {
+      const map = {
+        purchase_prep: "先試算你的安全購屋預算與需要準備的頭期款區間",
+        cashflow_risk: "優先整理房貸結構、每月支出與負債順序，找出可以立即調整的地方",
+        idle_asset: "釐清房產的持有目的與未來資金需求，再評估是否適合進一步規劃",
+        stable: "定期檢視房貸與現金流，確保財務結構持續保持穩健"
+      };
+      return map[typeKey];
+    }
+
+    function buildServiceDirection(typeKey) {
+      const map = {
+        purchase_prep: "適合進一步了解「現金流分析」，先算出安全的購屋預算與資金分配。",
+        cashflow_risk: "適合進一步了解「現金流分析」，優先處理房貸結構與每月支出壓力。",
+        idle_asset: "適合進一步了解「房產活化」的可能方向，搭配收入與還款能力綜合評估。",
+        stable: "適合進一步了解「資產配置」，讓房產與其他資產一起支撐長期目標。"
+      };
+      return map[typeKey];
+    }
+
+    const PROPERTY_RESULT_CONTENT = {
+      purchase_prep: {
+        typeName: "購屋準備型",
+        safetyLevel: "準備階段",
+        summary: "你目前尚未買房，或正在規劃購屋。這個階段最重要的，不是銀行願意貸給你多少，而是先算出你自己負擔得起、也不會壓縮生活品質的安全購屋預算。"
+      },
+      cashflow_risk: {
+        typeName: "現金流壓力型",
+        safetyLevel: "需要留意",
+        summary: "房產可能正在壓縮你的生活現金流。房貸占收入比例、每月結餘、緊急預備金或其他負債，至少有一項偏向需要留意的狀態，建議優先檢查房貸結構與支出順序。"
+      },
+      idle_asset: {
+        typeName: "資產沉睡型",
+        safetyLevel: "中等，可進一步規劃",
+        summary: "你名下已經有房產，現金流與房貸負擔目前還算可以，但你也提到未來有明確的資金需求。這代表房產的價值，可能還有進一步被有效運用的空間。"
+      },
+      stable: {
+        typeName: "房產穩健型",
+        safetyLevel: "相對穩健",
+        summary: "目前房產的財務結構相對穩健：房貸負擔合理、現金流有結餘、緊急預備金充足，其他負債壓力也較低。接下來可以把重點放在資產配置與長期增值規劃。"
+      }
+    };
 
     function finishPropertyQuiz() {
-      const totals = { cashFlowPressure: 0, assetConcentration: 0, idleProperty: 0 };
+      const computation = computePropertyScores();
+      const typeKey = determinePropertyType(computation);
 
-      propertyQuizQuestions.forEach(function (q) {
-        const selectedIndex = propertyAnswers[q.id];
-        const opt = q.options[selectedIndex];
-        totals.cashFlowPressure += opt.scores.cashFlowPressure;
-        totals.assetConcentration += opt.scores.assetConcentration;
-        totals.idleProperty += opt.scores.idleProperty;
-      });
+      propertyComputation = {
+        computation: computation,
+        typeKey: typeKey,
+        observations: buildObservations(typeKey, computation),
+        improvements: buildImprovements(typeKey, computation),
+        nextAction: buildNextAction(typeKey),
+        serviceDirection: buildServiceDirection(typeKey)
+      };
 
-      const typeKey = determinePropertyType(totals);
-      showPropertyResult(typeKey);
       trackEvent("property_quiz_complete", { result_type: typeKey });
-    }
 
-    function showPropertyResult(typeKey) {
-      const content = propertyResultContent[typeKey];
-
-      document.getElementById("propertyQuizForm").style.display = "none";
-      document.getElementById("propertyProgressWrap").style.display = "none";
-
-      const resultBox = document.getElementById("propertyResult");
-      resultBox.style.display = "block";
-
-      const suggestionsHtml = content.suggestions.map(function (s) {
-        return `<li>${s}</li>`;
-      }).join("");
-
-      resultBox.innerHTML = `
-        <h3>${content.title}</h3>
-        <p>${content.description}</p>
-        <p><strong>提醒：</strong>${content.reminder}</p>
-        <p><strong>建議：</strong></p>
-        <ul>${suggestionsHtml}</ul>
-
-        <div class="result-cta">
-          <h4>想更清楚知道，這間房子下一步怎麼整理嗎？</h4>
-          <p>房子是很多人一生最大的一筆資產，但有資產，不一定代表資金有彈性。</p>
-          <p>預約 15 分鐘免費房產財務方向評估，我會先陪你整理房貸、現金流與未來資金需求，確認目前最值得釐清的是哪一步。</p>
-          <div class="result-actions">
-            <button type="button" class="btn btn-primary" id="propertyBookingCta">預約 15 分鐘免費評估</button>
-            <button type="button" class="btn btn-secondary" id="propertyRestartBtn">重新測驗</button>
-          </div>
-        </div>
-      `;
-
-      document.getElementById("propertyBookingCta").addEventListener("click", function () {
-        trackEvent("property_quiz_booking_click", { result_type: typeKey });
-        goToBookingWithPropertyResult(content.typeName);
-      });
-
-      document.getElementById("propertyRestartBtn").addEventListener("click", restartPropertyQuiz);
-
-      resultBox.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-
-    // 這一頁跟預約表單不在同一個檔案裡，所以改用網址參數，
-    // 把測驗結果帶到 index.html 的預約區，讓 index.html 讀取後自動帶入。
-    function goToBookingWithPropertyResult(typeName) {
-      const params = new URLSearchParams();
-      params.set("quiz_result", typeName);
-      params.set("lead_source", "property_quiz");
-      params.set("quiz_type", "property_health");
-
-      window.location.href = `index.html?${params.toString()}#booking`;
-    }
-
-    function restartPropertyQuiz() {
-      propertyAnswers = {};
-      propertyCurrentIndex = 0;
-
-      const resultBox = document.getElementById("propertyResult");
-      resultBox.style.display = "none";
-      resultBox.innerHTML = "";
-
-      document.getElementById("propertyQuizForm").style.display = "block";
-      document.getElementById("propertyProgressWrap").style.display = "block";
-
-      renderPropertyQuestion();
-
-      document.getElementById("property-quiz").scrollIntoView({ behavior: "smooth" });
+      // 先進入「填寫個人資料」階段，尚未解鎖完整結果
+      document.getElementById("propertyQuizStage").style.display = "none";
+      document.getElementById("propertyLeadStage").style.display = "block";
+      document.getElementById("propertyLeadStage").scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
     renderPropertyQuestion();
@@ -880,6 +1354,274 @@
       }, { threshold: 0.3 });
 
       propertyObserver.observe(propertyQuizSection);
+    }
+
+    /* =========================================================================
+       個人資料填寫、驗證與送出
+       ========================================================================= */
+
+    function validateLeadForm() {
+      let isValid = true;
+
+      function setError(fieldId, message) {
+        const input = document.getElementById(fieldId);
+        const errorEl = document.getElementById("err-" + fieldId);
+        if (message) {
+          isValid = false;
+          if (errorEl) errorEl.textContent = message;
+          if (input) input.classList.add("field-invalid");
+        } else {
+          if (errorEl) errorEl.textContent = "";
+          if (input) input.classList.remove("field-invalid");
+        }
+      }
+
+      const name = document.getElementById("leadName").value.trim();
+      setError("leadName", name ? "" : "請填寫姓名");
+
+      const phoneRaw = document.getElementById("leadPhone").value.trim();
+      const phoneDigits = phoneRaw.replace(/[\s-]/g, "");
+      const phonePattern = /^09\d{8}$/;
+      setError("leadPhone", phonePattern.test(phoneDigits) ? "" : "請輸入正確的台灣手機號碼（例如：0912345678）");
+
+      const email = document.getElementById("leadEmail").value.trim();
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      setError("leadEmail", emailPattern.test(email) ? "" : "請輸入正確的 Email 格式");
+
+      const lineId = document.getElementById("leadLine").value.trim();
+      setError("leadLine", lineId ? "" : "請填寫 LINE ID");
+
+      const age = document.getElementById("leadAge").value;
+      setError("leadAge", age ? "" : "請選擇年齡區間");
+
+      const job = document.getElementById("leadJob").value;
+      setError("leadJob", job ? "" : "請選擇職業類型");
+
+      const city = document.getElementById("leadCity").value;
+      setError("leadCity", city ? "" : "請選擇所在縣市");
+
+      const consent = document.getElementById("leadConsent").checked;
+      setError("leadConsent", consent ? "" : "請先閱讀並勾選個資蒐集告知，才能查看結果");
+
+      return isValid;
+    }
+
+    function detectDeviceType() {
+      const ua = navigator.userAgent || "";
+      if (/iPad|Tablet/i.test(ua)) return "平板";
+      if (/Mobi|Android|iPhone/i.test(ua)) return "手機";
+      return "電腦";
+    }
+
+    function buildLeadPayload() {
+      const answersReadable = {};
+      PROPERTY_QUIZ_QUESTIONS.forEach(function (q) {
+        const ans = propertyAnswers[q.id];
+        if (q.type === "multi") {
+          answersReadable[q.id] = (ans || []).map(function (v) { return getAnswerLabel(q.id, v); }).join("、");
+        } else {
+          answersReadable[q.id] = getAnswerLabel(q.id, ans);
+        }
+      });
+
+      const s = propertyComputation.computation.scores;
+      const typeKey = propertyComputation.typeKey;
+      const content = PROPERTY_RESULT_CONTENT[typeKey];
+
+      let mainRisk = "無明顯風險";
+      if (typeKey === "cashflow_risk") {
+        mainRisk = "房貸壓力或現金流吃緊";
+      } else if (typeKey === "idle_asset") {
+        mainRisk = "房產活化潛力尚未被有效運用";
+      } else if (typeKey === "purchase_prep") {
+        mainRisk = "購屋預算與準備度尚待確認";
+      }
+
+      return {
+        提交時間: new Date().toISOString(),
+        姓名: document.getElementById("leadName").value.trim(),
+        手機號碼: document.getElementById("leadPhone").value.trim(),
+        Email: document.getElementById("leadEmail").value.trim(),
+        LINE_ID: document.getElementById("leadLine").value.trim(),
+        年齡區間: document.getElementById("leadAge").value,
+        職業類型: document.getElementById("leadJob").value,
+        所在縣市: document.getElementById("leadCity").value,
+        目前房產狀態: getAnswerLabel("q1", propertyAnswers.q1),
+        題目答案: answersReadable,
+        房貸壓力分數: s.mortgagePressure,
+        現金流安全分數: s.cashFlowSafety,
+        緊急預備金分數: s.emergencyFund,
+        其他負債分數: s.otherDebt,
+        房產活化潛力分數: s.activationPotential,
+        購屋準備程度分數: propertyAnswers.q1 === "not_yet" ? propertyComputation.computation.purchaseReadiness : "不適用",
+        總分: s.mortgagePressure + s.cashFlowSafety + s.emergencyFund + s.otherDebt + s.activationPotential,
+        最終房產類型: content.typeName,
+        主要風險: mainRisk,
+        建議方向: propertyComputation.serviceDirection,
+        個資同意時間: new Date().toISOString(),
+        來源頁面: "property-quiz.html",
+        使用裝置類型: detectDeviceType()
+      };
+    }
+
+    async function submitPropertyLead(payload) {
+      if (!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL.indexOf("http") !== 0) {
+        return { success: false, error: "尚未設定 Google Apps Script 網址" };
+      }
+
+      try {
+        const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+        return data;
+      } catch (err) {
+        return { success: false, error: "網路連線發生問題，請稍後再試" };
+      }
+    }
+
+    let leadSubmitting = false;
+
+    document.getElementById("propertyLeadSubmitBtn").addEventListener("click", async function () {
+      if (leadSubmitting) return;
+
+      const statusEl = document.getElementById("propertyLeadStatus");
+
+      if (!validateLeadForm()) {
+        statusEl.textContent = "請確認上方欄位都已正確填寫";
+        statusEl.className = "submit-status is-error";
+        return;
+      }
+
+      leadSubmitting = true;
+      const submitBtn = document.getElementById("propertyLeadSubmitBtn");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "送出中，請稍候...";
+      statusEl.textContent = "資料傳送中，請稍候...";
+      statusEl.className = "submit-status is-loading";
+
+      const payload = buildLeadPayload();
+      const result = await submitPropertyLead(payload);
+
+      if (result && result.success) {
+        statusEl.textContent = "";
+        trackEvent("property_quiz_lead_submit_success", { result_type: propertyComputation.typeKey });
+        revealPropertyResult();
+        clearLeadFormFields();
+      } else {
+        leadSubmitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = "重新送出";
+        statusEl.textContent = "資料送出失敗，請確認網路連線後重新送出一次（你填寫的資料不會遺失）。";
+        statusEl.className = "submit-status is-error";
+        trackEvent("property_quiz_lead_submit_error", { result_type: propertyComputation.typeKey });
+      }
+    });
+
+    function clearLeadFormFields() {
+      // 送出成功後，清除前端暫存的個人資料欄位（本測驗全程未使用 localStorage / sessionStorage）
+      ["leadName", "leadPhone", "leadEmail", "leadLine"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      const consentEl = document.getElementById("leadConsent");
+      if (consentEl) consentEl.checked = false;
+    }
+
+    function revealPropertyResult() {
+      const typeKey = propertyComputation.typeKey;
+      const content = PROPERTY_RESULT_CONTENT[typeKey];
+
+      document.getElementById("propertyLeadStage").style.display = "none";
+
+      const resultBox = document.getElementById("propertyResult");
+      resultBox.style.display = "block";
+
+      const observationsHtml = propertyComputation.observations.map(function (s) {
+        return `<li>${s}</li>`;
+      }).join("");
+
+      const improvementsHtml = propertyComputation.improvements.map(function (s) {
+        return `<li>${s}</li>`;
+      }).join("");
+
+      resultBox.innerHTML = `
+        <div class="safety-badge">房產安全程度：${content.safetyLevel}</div>
+        <h3>你的房產類型：${content.typeName}</h3>
+        <p>${content.summary}</p>
+
+        <p><strong>三項主要觀察：</strong></p>
+        <ul>${observationsHtml}</ul>
+
+        <p><strong>兩項優先改善建議：</strong></p>
+        <ul>${improvementsHtml}</ul>
+
+        <p><strong>下一步行動：</strong>${propertyComputation.nextAction}</p>
+        <p><strong>適合進一步了解：</strong>${propertyComputation.serviceDirection}</p>
+
+        <p class="disclaimer">
+          本測驗結果依照你提供的資訊進行初步分析，僅供財務整理與方向參考，
+          不代表銀行核貸結果或個別投資建議。
+        </p>
+
+        <div class="result-cta">
+          <h4>想知道你的房產還有沒有更好的安排方式？</h4>
+          <p>透過一對一房產安全評估，進一步整理你的房貸壓力、現金流與房產運用方向。</p>
+          <div class="result-actions">
+            <button type="button" class="btn btn-primary" id="propertyBookingCta">預約免費房產安全評估</button>
+            <button type="button" class="btn btn-secondary" id="propertyRestartBtn">重新測驗</button>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("propertyBookingCta").addEventListener("click", function () {
+        trackEvent("property_quiz_booking_click", { result_type: typeKey });
+        goToBookingWithPropertyResult(content.typeName);
+      });
+
+      document.getElementById("propertyRestartBtn").addEventListener("click", restartPropertyQuiz);
+
+      resultBox.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    // 這一頁跟預約表單不在同一個檔案裡，所以改用網址參數，
+    // 只帶「測驗類型名稱」這種非個人資料的資訊，把測驗結果帶到 index.html 的預約區。
+    function goToBookingWithPropertyResult(typeName) {
+      const params = new URLSearchParams();
+      params.set("quiz_result", typeName);
+      params.set("lead_source", "property_quiz");
+      params.set("quiz_type", "property_health");
+
+      window.location.href = `index.html?${params.toString()}#booking`;
+    }
+
+    function restartPropertyQuiz() {
+      propertyAnswers = {};
+      propertyCurrentIndex = 0;
+      propertyComputation = null;
+      leadSubmitting = false;
+
+      const resultBox = document.getElementById("propertyResult");
+      resultBox.style.display = "none";
+      resultBox.innerHTML = "";
+
+      document.getElementById("propertyLeadStage").style.display = "none";
+      clearLeadFormFields();
+      document.querySelectorAll(".field-error").forEach(function (el) { el.textContent = ""; });
+      document.querySelectorAll(".field-invalid").forEach(function (el) { el.classList.remove("field-invalid"); });
+
+      const submitBtn = document.getElementById("propertyLeadSubmitBtn");
+      submitBtn.disabled = false;
+      submitBtn.textContent = "查看我的完整分析結果";
+      document.getElementById("propertyLeadStatus").textContent = "";
+
+      document.getElementById("propertyQuizStage").style.display = "block";
+
+      renderPropertyQuestion();
+
+      document.getElementById("property-quiz").scrollIntoView({ behavior: "smooth" });
     }
   </script>
 
